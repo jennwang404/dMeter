@@ -21,6 +21,7 @@ header {
 }
 
 .white {
+	display: inline-block;
 	position: fixed;
     top: 0px;
     padding-top: 40px;
@@ -44,4 +45,18 @@ header {
 
 #year {
 	display: none;
+}
+
+.button {
+	border: none;
+	background-color: lightgray;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 8px 8px;
+    cursor: pointer;
 }
