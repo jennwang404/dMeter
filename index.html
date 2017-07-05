@@ -1,10 +1,12 @@
 <!DOCTYPE html>
+<meta content="utf-8" http-equiv="encoding">
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <title>dMeter</title>
         <link rel="stylesheet" type="text/css" href="style.css">
-        <script src="script.js"></script>
+        <script type="text/javascript" src="d3.min.js"></script>
+
     </head>
 	<body>
 		<header>
@@ -16,10 +18,14 @@
 			<button class="button" onclick="week_function()">Week</button>
 			<button class="button" onclick="month_function()">Month</button>
 			<button class="button" onclick="year_function()">Year</button>
-			<div id="day">Day</div>
-			<div id="week">Week</div>
-			<div id="month">Month</div>
-			<div id="year">Year</div>
+			<div id="day"></div>
+			<div id="week"></div>
+			<div id="month"></div>
+			<div id="year"></div>
 		</div>
+
+		<script src="script.js"></script>
+		<script src="dayscript.js"></script>
+		<script src="weekscript.js"></script>
 	</body>
 </html>

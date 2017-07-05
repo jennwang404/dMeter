@@ -1,3 +1,5 @@
+/* Script to display either Day, Week, Month, or Year Data */
+
 function day_function() {
 	document.getElementById('day').style.display = 'block';
 	document.getElementById('week').style.display = 'none';
