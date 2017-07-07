@@ -32,7 +32,6 @@ function year_function() {
 
 /* Day Data Viz Script */
 
-/*
 
 // set the dimensions and margins of the graph
 var margin = {top: 20, right: 20, bottom: 30, left: 50},
@@ -40,7 +39,7 @@ var margin = {top: 20, right: 20, bottom: 30, left: 50},
     height = 300 - margin.top - margin.bottom;
 
 // parse the date / time
-var parseTime = d3.timeParse("%d-%b-%y-%H:%M");
+var parseTimeDay = d3.timeParse("%d-%b-%y-%H:%M");
 
 // set the ranges
 var x = d3.scaleTime().range([0, width]);
@@ -60,7 +59,7 @@ var valueline = d3.line()
 // append the svg obgect to the body of the page
 // appends a 'group' element to 'svg'
 // moves the 'group' element to the top left margin
-var svg = d3.select("#day").append("svg")
+var svgDay = d3.select("#day").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   	.append("g")
@@ -73,10 +72,8 @@ d3.csv("daydata.csv", function(error, data) {
 
   // format the data
   data.forEach(function(d) {
-      d.date = parseTime(d.date);
-      console.log(d.date);
+      d.date = parseTimeDay(d.date);
       d.usage = +d.usage;
-      console.log(d.usage);
   });
 
   // Scale the range of the data
@@ -84,31 +81,31 @@ d3.csv("daydata.csv", function(error, data) {
   y.domain([0, d3.max(data, function(d) { return d.usage; })]);
 
   // add the area
-    svg.append("path")
+  svgDay.append("path")
        .data([data])
        .attr("class", "area")
        .attr("d", area);
 
   // Add the valueline path.
-  svg.append("path")
+  svgDay.append("path")
       .data([data])
-      .attr("class", "line")
+      .attr("class", "energyline")
       .attr("d", valueline);
 
   // Add the X Axis
-  svg.append("g")
+  svgDay.append("g")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x));
 
   // Add the Y Axis
-  svg.append("g")
+  svgDay.append("g")
       .call(d3.axisLeft(y));
 
 });
 
-*/
 
 /* Week Data Viz Script */
+
 
 // set the dimensions and margins of the graph
 var margin = {top: 20, right: 20, bottom: 30, left: 50},
@@ -121,7 +118,6 @@ var parseTimeWeek = d3.timeParse("%d-%b-%y");
 // set the ranges
 var x = d3.scaleTime().range([0, width]);
 var y = d3.scaleLinear().range([height, 0]);
-
 
 var area = d3.area()
     .x(function(d) { return x(d.date); })
@@ -158,7 +154,7 @@ d3.csv("weekdata.csv", function(error, data) {
   y.domain([0, d3.max(data, function(d) { return d.usage; })]);
 
   // add the area
-    svgWeek.append("path")
+  svgWeek.append("path")
        .data([data])
        .attr("class", "area")
        .attr("d", area);
@@ -166,13 +162,13 @@ d3.csv("weekdata.csv", function(error, data) {
   // Add the valueline path.
   svgWeek.append("path")
       .data([data])
-      .attr("class", "line")
+      .attr("class", "energyline")
       .attr("d", valueline);
 
   // Add the X Axis
   svgWeek.append("g")
       .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
+      .call(d3.axisBottom(x).ticks(7));
 
   // Add the Y Axis
   svgWeek.append("g")

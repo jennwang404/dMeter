@@ -34,7 +34,7 @@ header {
 }
 
 #day {
-	display: none;
+	display: block;
 }
 
 #week {
@@ -65,7 +65,7 @@ header {
 
 /* Styling for the d3 graphs */
 
-.line {
+.energyline {
   fill: none;
   stroke: #E64C66;
   stroke-width: 2px;
