@@ -1,4 +1,4 @@
-/* Styling for the web page */
+/* Styling for the web page -- color scheme via https://color.adobe.com/Green-Dark-Blue-color-theme-3854662/ */
 
 body {
 	margin: 0px;
@@ -8,7 +8,7 @@ body {
 
 header {
 	color: white;
-	background-color: #6FCF97;
+	background-color: #1BBC9B;
 	padding: 10px;
 }
 
@@ -18,7 +18,7 @@ header {
     left: 0px;
     width: 40%;
     height: 100%;
-    background-color: lightgray;
+    background-color: #AEAEAE;
     z-index: -1;
 }
 
@@ -26,7 +26,7 @@ header {
 	display: inline-block;
 	position: fixed;
     top: 0px;
-    padding-top: 40px;
+    padding: 50px;
     left: 40%;
     height: 100%;
     background-color: white;
@@ -51,10 +51,9 @@ header {
 
 .button {
 	border: none;
-	background-color: lightgray;
-    color: white;
+	background: transparent;
+    color: #AEAEAE;
     padding: 15px;
-    border-radius: 5px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -68,10 +67,11 @@ header {
 
 .line {
   fill: none;
-  stroke: gray;
+  stroke: #E64C66;
   stroke-width: 2px;
 }
 
 .area {
-    fill: lightgray;
+    fill: #E64C66;
+    opacity: .5;
 }
