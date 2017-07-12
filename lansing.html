@@ -88,10 +88,10 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
    <div class = "card">
 		<div class = "contain">
 			<div class = "buttons">
-				<span class = "btn" id = "button0" onclick = "changeGraph('yearly data.csv', 0)">year</span> 
-				<span class = "btn" id = "button1" onclick = "changeGraph('monthly data.csv', 1)">month</span> 
-				<span class = "btn" id = "button2" onclick = "changeGraph('yearly data.csv', 2)">week</span> 
-				<span class = "btn" id = "button3" onclick = "changeGraph('yearly data.csv', 3)">day</span> 
+				<span class = "btn" id = "button0" onclick = "changeGraph('yeardata.php', 0)">year</span> 
+				<span class = "btn" id = "button1" onclick = "changeGraph('monthdata.php', 1)">month</span> 
+				<span class = "btn" id = "button2" onclick = "changeGraph('yeardata.php', 2)">week</span> 
+				<span class = "btn" id = "button3" onclick = "changeGraph('yeardata.php', 3)">day</span> 
 			</div>
 			<div id = "svg">
 			<svg id = "graph" style = "border: 1px solid black"></svg>
@@ -122,20 +122,18 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
 					
 				var plot = svg.append("g");
 				
-				function parseYear(line){
-					console.log((line["Year"]));
-					return{
-						Time: new Date(Number(line["Year"]),1),
-						Usage: Number(line["Usage"])
-					}
+				function parseYear(data){
+					data.forEach(function(d){
+							d.Time = new Date(Number(d.Year),0);
+							d.Usage = Number(d.EnergyUse);
+						});
 				}
 				
-				function parseMonth(line){
-					console.log((line));
-					return{
-						Time: new Date(Number(line["Year"]), Number(line["Month"])-1),
-						Usage: Number(line["EnergyUse"])
-					}
+				function parseMonth(data){
+					data.forEach(function(d){
+							d.Time = new Date(Number(d.Year), Number(d.Month)-1);
+							d.Usage = Number(d.EnergyUse);
+						});
 				}
 				
 				function parseMonthTemp(line){
@@ -165,18 +163,24 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
 					if (time == 1) parseLine = parseMonth;
 					else parseLine = parseYear;
 					
-					d3.json(path, parseLine, function(error, d){
+					d3.json(path, function(error, d){
 						var data = d;
 						console.log(d);
 						
+						parseLine(data);
+						
 						xExtent = d3.extent(data, function(d){return d.Time});
+						console.log(xExtent[1].getFullYear());
+						var dtmp = new Date(xExtent[1].getFullYear(), 12);
+						if (time != 1)xExtent[1] = dtmp;
+						console.log(dtmp);
 						console.log(xExtent);
 						yExtent = d3.extent(data, function(d){return d.Usage});
 						xScale = d3.scaleLinear().domain(xExtent).range([paddingW, width - paddingH]);
 						yScale = d3.scaleLinear().domain(yExtent).range([height - paddingH, paddingH]);
 						var xAxis = d3.axisBottom(xScale);
 						if (time == 1) xAxis.tickFormat(d3.timeFormat("%b"));
-						else xAxis.tickFormat(d3.timeFormat("%Y"));
+						else xAxis.tickFormat(d3.timeFormat("%y-%m"));
 						plot.append("g").call(xAxis).attr("transform", "translate(0," + (height - paddingH) + ")");
 						plot.append("g").call(d3.axisLeft(yScale)).attr("transform", "translate(" + paddingW + ", 0)");
 						
@@ -225,7 +229,9 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
 						console.log(d);
 						
 						var xExtent = d3.extent(data, function(d){return d.Time});
-						console.log(xExtent);
+						var tmp = new Date(xExtent[1].getYear(), 12);
+						xExtent[1] = tmp;
+						console.log(tmp);
 						var yExtent = d3.extent(data, function(d){return d.Usage});
 						xScale = d3.scaleLinear().domain(xExtent).range([paddingW, width - paddingH]);
 						yScale = d3.scaleLinear().domain(yExtent).range([height - paddingH, paddingH]);
@@ -252,7 +258,7 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
 					.style("fill", "none");
 				};
 				
-				changeGraph("connection.php",1);
+				changeGraph("monthdata.php",1);
 				
 				
 			</script>
