@@ -205,7 +205,7 @@ var valueline = d3.line()
 // append the svg obgect to the body of the page
 // appends a 'group' element to 'svg'
 // moves the 'group' element to the top left margin
-var svgWeek = d3.select("#month").append("svg")
+var svgMonth = d3.select("#month").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   	.append("g")
@@ -227,24 +227,24 @@ d3.csv("monthdata.csv", function(error, data) {
   y.domain([0, d3.max(data, function(d) { return d.usage; })]);
 
   // add the area
-  svgWeek.append("path")
+  svgMonth.append("path")
        .data([data])
        .attr("class", "area")
        .attr("d", area);
 
   // Add the valueline path.
-  svgWeek.append("path")
+  svgMonth.append("path")
       .data([data])
       .attr("class", "energyline")
       .attr("d", valueline);
 
   // Add the X Axis
-  svgWeek.append("g")
+  svgMonth.append("g")
       .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x).ticks(31));
+      .call(d3.axisBottom(x).ticks(4));
 
   // Add the Y Axis
-  svgWeek.append("g")
+  svgMonth.append("g")
       .call(d3.axisLeft(y));
 
 });
@@ -278,7 +278,7 @@ var valueline = d3.line()
 // append the svg obgect to the body of the page
 // appends a 'group' element to 'svg'
 // moves the 'group' element to the top left margin
-var svgWeek = d3.select("#year").append("svg")
+var svgYear = d3.select("#year").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   	.append("g")
@@ -300,24 +300,24 @@ d3.csv("yeardata.csv", function(error, data) {
   y.domain([0, d3.max(data, function(d) { return d.usage; })]);
 
   // add the area
-  svgWeek.append("path")
+  svgYear.append("path")
        .data([data])
        .attr("class", "area")
        .attr("d", area);
 
   // Add the valueline path.
-  svgWeek.append("path")
+  svgYear.append("path")
       .data([data])
       .attr("class", "energyline")
       .attr("d", valueline);
 
   // Add the X Axis
-  svgWeek.append("g")
+  svgYear.append("g")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x).ticks(12));
 
   // Add the Y Axis
-  svgWeek.append("g")
+  svgYear.append("g")
       .call(d3.axisLeft(y));
 
 });
