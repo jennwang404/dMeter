@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <meta content="utf-8" http-equiv="encoding">
 <html class="nojs html css_verticalspacer" lang="en-US">
@@ -35,7 +36,22 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
 </script>
    </head>
  <body>
+  <?php
 
+    //Get the connection info for the database
+    require_once 'includes/config.php';
+
+    //Establish a database connection
+    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+    //Was there an error connecting to the database?
+    if ($mysqli->errno) {
+      //The page isn't worth much without a db connection so display the error and quit
+      print($mysqli->error);
+      exit();
+    }
+
+  ?>
   <div class="clearfix borderbox" id="page"><!-- column -->
    <div class="position_content" id="page_position_content">
     <div class="browser_width colelem" id="u987-bw">
