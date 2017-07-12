@@ -32,14 +32,13 @@ function year_function() {
 
 /* Day Data Viz Script */
 
-
 // set the dimensions and margins of the graph
 var margin = {top: 20, right: 10, bottom: 20, left: 10},
     width = 500 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
 
 // parse the date / time
-var parseTimeDay = d3.timeParse("%d-%b-%y-%H:%M");
+var parseTimeDay = d3.timeParse("%Y-%m-%d-%H:%M");
 
 // set the ranges
 var x = d3.scaleTime().range([0, width]);
@@ -69,10 +68,10 @@ var svgDay = d3.select("#day").append("svg")
 // Get the data
 d3.csv("daydata.csv", function(error, data) {
   if (error) throw error;
-
   // format the data
   data.forEach(function(d) {
       d.date = parseTimeDay(d.date);
+      //console.log(d.date);
       d.usage = +d.usage;
   });
 
@@ -113,7 +112,7 @@ var margin = {top: 20, right: 10, bottom: 20, left: 10},
     height = 300 - margin.top - margin.bottom;
 
 // parse the date / time
-var parseTimeWeek = d3.timeParse("%d-%b-%y");
+var parseTimeWeek = d3.timeParse("%Y-%m-%d");
 
 // set the ranges
 var x = d3.scaleTime().range([0, width]);
@@ -146,7 +145,9 @@ d3.csv("weekdata.csv", function(error, data) {
   // format the data
   data.forEach(function(d) {
       d.date = parseTimeWeek(d.date);
+      console.log(d.date);
       d.usage = +d.usage;
+      console.log(d.usage);
   });
 
   // Scale the range of the data
@@ -169,6 +170,151 @@ d3.csv("weekdata.csv", function(error, data) {
   svgWeek.append("g")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x).ticks(7));
+
+  // Add the Y Axis
+  svgWeek.append("g")
+      .call(d3.axisLeft(y));
+
+});
+
+/* Month Data Viz Script */
+
+
+// set the dimensions and margins of the graph
+var margin = {top: 20, right: 10, bottom: 20, left: 10},
+    width = 500 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
+
+// parse the date / time
+var parseTimeMonth = d3.timeParse("%Y-%m-%d");
+
+// set the ranges
+var x = d3.scaleTime().range([0, width]);
+var y = d3.scaleLinear().range([height, 0]);
+
+var area = d3.area()
+    .x(function(d) { return x(d.date); })
+    .y0(height)
+    .y1(function(d) { return y(d.usage); });
+
+// define the line
+var valueline = d3.line()
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.usage); });
+
+// append the svg obgect to the body of the page
+// appends a 'group' element to 'svg'
+// moves the 'group' element to the top left margin
+var svgWeek = d3.select("#month").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  	.append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+// Get the data
+d3.csv("monthdata.csv", function(error, data) {
+  if (error) throw error;
+
+  // format the data
+  data.forEach(function(d) {
+      d.date = parseTimeMonth(d.date);
+      d.usage = +d.usage;
+  });
+
+  // Scale the range of the data
+  x.domain(d3.extent(data, function(d) { return d.date; }));
+  y.domain([0, d3.max(data, function(d) { return d.usage; })]);
+
+  // add the area
+  svgWeek.append("path")
+       .data([data])
+       .attr("class", "area")
+       .attr("d", area);
+
+  // Add the valueline path.
+  svgWeek.append("path")
+      .data([data])
+      .attr("class", "energyline")
+      .attr("d", valueline);
+
+  // Add the X Axis
+  svgWeek.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x).ticks(31));
+
+  // Add the Y Axis
+  svgWeek.append("g")
+      .call(d3.axisLeft(y));
+
+});
+
+
+/* Year Data Viz Script */
+
+
+// set the dimensions and margins of the graph
+var margin = {top: 20, right: 10, bottom: 20, left: 10},
+    width = 500 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
+
+// parse the date / time
+var parseTimeYear = d3.timeParse("%Y-%m");
+
+// set the ranges
+var x = d3.scaleTime().range([0, width]);
+var y = d3.scaleLinear().range([height, 0]);
+
+var area = d3.area()
+    .x(function(d) { return x(d.date); })
+    .y0(height)
+    .y1(function(d) { return y(d.usage); });
+
+// define the line
+var valueline = d3.line()
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.usage); });
+
+// append the svg obgect to the body of the page
+// appends a 'group' element to 'svg'
+// moves the 'group' element to the top left margin
+var svgWeek = d3.select("#year").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  	.append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+// Get the data
+d3.csv("yeardata.csv", function(error, data) {
+  if (error) throw error;
+
+  // format the data
+  data.forEach(function(d) {
+      d.date = parseTimeYear(d.date);
+      d.usage = +d.usage;
+  });
+
+  // Scale the range of the data
+  x.domain(d3.extent(data, function(d) { return d.date; }));
+  y.domain([0, d3.max(data, function(d) { return d.usage; })]);
+
+  // add the area
+  svgWeek.append("path")
+       .data([data])
+       .attr("class", "area")
+       .attr("d", area);
+
+  // Add the valueline path.
+  svgWeek.append("path")
+      .data([data])
+      .attr("class", "energyline")
+      .attr("d", valueline);
+
+  // Add the X Axis
+  svgWeek.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x).ticks(12));
 
   // Add the Y Axis
   svgWeek.append("g")

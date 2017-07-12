@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html class="nojs html css_verticalspacer" lang="en-US">
  <head>
@@ -5,7 +6,7 @@
   <meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
   <meta name="generator" content="2017.0.1.363"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  
+
   <script type="text/javascript" src="scripts/d3.min.js"></script>
   <script type="text/javascript">
    // Update the 'nojs'/'js' class on the html node
@@ -30,6 +31,22 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
 </script>
    </head>
  <body>
+  <?php
+
+    //Get the connection info for the database
+    require_once 'includes/config.php';
+
+    //Establish a database connection
+    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+    //Was there an error connecting to the database?
+    if ($mysqli->errno) {
+      //The page isn't worth much without a db connection so display the error and quit
+      print($mysqli->error);
+      exit();
+    }
+
+  ?>
   <div class="clearfix borderbox" id="page"><!-- column -->
    <div class="position_content" id="page_position_content">
     <div class="browser_width colelem" id="u108-bw">
@@ -86,8 +103,70 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
           <button class="button" onclick="week_function()">Week</button>
           <button class="button" onclick="month_function()">Month</button>
           <button class="button" onclick="year_function()">Year</button>
-          <div id="day"></div>
-          <div id="week"></div>
+          <div id="day">
+            <?php
+
+              //Selects all possible dates from the db
+              $query = "SELECT DISTINCT Day FROM Energy_Usage";
+              $result = mysqli_query($mysqli, $query) or die('Error querying database.');
+
+              echo "<div id='day-select'><form action='' method='get'><select name='day'>";
+              while ($row = mysqli_fetch_array($result)) {
+                echo '<option value="'.$row['Day'].'">'.$row['Day']."</option>";
+              }
+              echo "</select><input type='submit' onclick='day_function()'></form>";
+
+              $day = null;
+              if (isset($_GET["day"])){
+                $day = $_GET["day"];
+              }
+
+              echo "</div>";
+
+              if ($day!=null) {
+                //Selects Energy Usage data for this particular day
+                $query = "SELECT Hour, EnergyUse FROM Energy_Usage WHERE Day='$day'";
+                $result = mysqli_query($mysqli, $query) or die('Error querying database.');
+
+                $file_string = "date,usage\n";
+                while ($row = mysqli_fetch_array($result)) {
+                  if (strlen($row['Hour'])==1) {
+                    $file_string = $file_string.$day."-0".$row['Hour'].":00".",".$row['EnergyUse']."\n";
+                  } else {
+                    $file_string = $file_string.$day."-".$row['Hour'].":00".",".$row['EnergyUse']."\n";
+                  }
+                }
+
+                $file = fopen("daydata.csv","w");
+                fwrite($file, $file_string);
+                fclose($file);
+              }
+            ?>
+          </div>
+          <div id="week">
+            <?php
+
+              //Selects all possible dates from the db
+              $query = "SELECT DISTINCT Day FROM Energy_Usage";
+              $result = mysqli_query($mysqli, $query) or die('Error querying database.');
+
+              echo "<div id='week-select'><form action='' method='get'><select name='week'>";
+              $i = 0;
+              while ($row = mysqli_fetch_array($result)) {
+                if (($i-1)%7==0){
+                  echo '<option value="'.$row['Day'].'">'.$row['Day']."</option>";
+                }
+                $i=$i+1;
+              }
+              echo "</select><input type='submit' onclick='week_function()'></form>";
+
+              if (isset($_GET["week"])){
+                  echo $_GET["week"];
+              }
+
+              echo "</div>";
+            ?>
+          </div>
           <div id="month"></div>
           <div id="year"></div>
       </div>
