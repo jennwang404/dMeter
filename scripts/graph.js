@@ -1,3 +1,4 @@
+
 var height, width, padding;
 
 var prev = 0;
@@ -36,6 +37,14 @@ function parseMonth(data){
 		});
 }
 
+function parseDay(data){
+	data.forEach(function(d){
+			d.Time = new Date(Number(d.Year), Number(d.Month)-1, Number(d.Day));
+			console.log(d.Time);
+			d.Usage = Number(d.EnergyUse);
+		});
+}
+
 function parseMonthTemp(line){
 	return{
 		Time: new Date(Number(line["Year"]), Number(line["Month"])-1),
@@ -61,7 +70,8 @@ function changeGraph(path, time){
 	plot = svg.append("g");
 	
 	if (time == 1) parseLine = parseMonth;
-	else parseLine = parseYear;
+	else if (time == 0) parseLine = parseYear;
+	else parseLine = parseDay;
 	
 	d3.json(path, function(error, d){
 		var data = d;
@@ -71,16 +81,14 @@ function changeGraph(path, time){
 		
 		xExtent = d3.extent(data, function(d){return d.Time});
 		console.log(xExtent[1].getFullYear());
-		var dtmp = new Date(xExtent[1].getFullYear(), 12);
-		if (time != 1)xExtent[1] = dtmp;
-		console.log(dtmp);
-		console.log(xExtent);
 		yExtent = d3.extent(data, function(d){return d.Usage});
+		yExtent[0] = 0;
 		xScale = d3.scaleLinear().domain(xExtent).range([paddingW, width - paddingH]);
 		yScale = d3.scaleLinear().domain(yExtent).range([height - paddingH, paddingH]);
 		var xAxis = d3.axisBottom(xScale);
 		if (time == 1) xAxis.tickFormat(d3.timeFormat("%b"));
-		else xAxis.tickFormat(d3.timeFormat("%y"));
+		else if (time == 0)xAxis.tickFormat(d3.timeFormat("%y"));
+		else xAxis.tickFormat(d3.timeFormat("%m-%d"))
 		plot.append("g").call(xAxis).attr("transform", "translate(0," + (height - paddingH) + ")");
 		plot.append("g").call(d3.axisLeft(yScale)).attr("transform", "translate(" + paddingW + ", 0)");
 		
@@ -129,9 +137,6 @@ function changeTempGraph(path, time){
 		console.log(d);
 		
 		var xExtent = d3.extent(data, function(d){return d.Time});
-		var tmp = new Date(xExtent[1].getYear(), 12);
-		xExtent[1] = tmp;
-		console.log(tmp);
 		var yExtent = d3.extent(data, function(d){return d.Usage});
 		xScale = d3.scaleLinear().domain(xExtent).range([paddingW, width - paddingH]);
 		yScale = d3.scaleLinear().domain(yExtent).range([height - paddingH, paddingH]);
