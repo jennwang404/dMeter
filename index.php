@@ -66,7 +66,6 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
 
         //check that inputs are good here 
 
-        //Check that this user doesn't already exist in the database (no one with this email already)
         $user_query = "SELECT * FROM Users WHERE email = '$email'";
 
         $user_result = $mysqli->query($user_query);
@@ -74,10 +73,15 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
         //Uncomment the next line for debugging
         //echo "<pre>" . print_r( $mysqli, true) . "</p>";
         
+        //This user doesn't already exist in the database (no one with this email already)
         if ( $user_result && $user_result->num_rows == 0) {
 
+          //Nothing was entered in the form
+          if ($email == '' && $password == '' && $firstname == '' && $lastname == '' && $nyseg == '' && $address == '' && $phone == '') {
+            $message = null;
+          }
           //Check that the email address entered is valid
-          if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+          else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $message = "Invalid email address";
           } 
           //Check that the first name entered is valid
@@ -100,10 +104,15 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
           else if ($phone != null && (strlen($phone) != 10 || strlen($phone) != 11)) {
             $message = 'Invalid phone number';
           } 
-
-
-          else { //Else, everything is okay, add user to the database and echo a success message
-            $message = "Sign up successful";
+          //Everything is okay, add user to the database and echo a success message
+          else {
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            $query = "INSERT INTO Users VALUES ('$email', '$hashed_password', '$firstname', '$lastname', '$nyseg', '$address', '$phone')";
+            //echo $query;
+            $result = $mysqli->query($query);
+            if ($result){
+              $message = "Sign up successful";
+            }
           }
           //Debugging
           //echo "<pre>" . print_r( $row, true) . "</p>";
