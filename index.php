@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <meta content="utf-8" http-equiv="encoding">
 <html class="nojs html css_verticalspacer" lang="en-US">
@@ -35,14 +36,133 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
 </script>
    </head>
  <body>
+  <?php
+    //Get the connection info for the database
+    require_once 'includes/config.php';
 
+    //Establish a database connection
+    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+    //Was there an error connecting to the database?
+    if ($mysqli->errno) {
+      //The page isn't worth much without a db connection so display the error and quit
+      print($mysqli->error);
+      exit();
+    }
+
+    $message = null;
+    $login_message = null;
+    $login_message_succ = null;
+
+    if (isset($_POST['submit'])){
+      if ($_POST['submit']=="SIGN UP") {
+        $email = filter_input( INPUT_POST, 'email', FILTER_SANITIZE_STRING );
+        $password = filter_input( INPUT_POST, 'password', FILTER_SANITIZE_STRING );
+        $firstname = filter_input( INPUT_POST, 'firstname', FILTER_SANITIZE_STRING );
+        $lastname = filter_input( INPUT_POST, 'lastname', FILTER_SANITIZE_STRING );
+        $nyseg = filter_input( INPUT_POST, 'nyseg', FILTER_SANITIZE_STRING );
+        $address = filter_input( INPUT_POST, 'address', FILTER_SANITIZE_STRING );
+        $phone = filter_input( INPUT_POST, 'phone', FILTER_SANITIZE_STRING );
+
+        $user_query = "SELECT * FROM Users WHERE email = '$email'";
+
+        $user_result = $mysqli->query($user_query);
+        
+        //This user doesn't already exist in the database (no one with this email already)
+        if ( $user_result && $user_result->num_rows == 0) {
+
+          //Nothing was entered in the form
+          if ($email == '' && $password == '' && $firstname == '' && $lastname == '' && $nyseg == '' && $address == '' && $phone == '') {
+            $message = null;
+          }
+          //Check that the email address entered is valid
+          else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $message = "Invalid email address";
+          } 
+          //Check that the first name entered is valid
+          else if (ctype_alpha(str_replace(' ', '', $firstname)) === false) {
+            $message = 'First name must contain letters and spaces only';
+          } 
+          //Check that the last name entered is valid
+          else if (ctype_alpha(str_replace(' ', '', $lastname)) === false) {
+            $message = 'Last name must contain letters and spaces only';
+          } 
+          //Check that the NYSEG Account Number entered is valid
+          else if (strlen($nyseg) != 10) {
+            $message = 'Invalid NYSEG account number';
+          } 
+          //Check that an address was entered
+          else if (strlen($address) == 0) {
+            $message = 'Please enter a valid home address';
+          } 
+          //Check that the phone number entered is valid
+          else if ($phone != null && (strlen($phone) != 10 || strlen($phone) != 11)) {
+            $message = 'Invalid phone number';
+          } 
+          //Everything is okay, add user to the database and echo a success message
+          else {
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            $query = "INSERT INTO Users VALUES ('$email', '$hashed_password', '$firstname', '$lastname', '$nyseg', '$address', '$phone')";
+            //echo $query;
+            $result = $mysqli->query($query);
+            if ($result){
+              $message = "Sign up successful";
+            }
+          }
+
+        } else if ( $user_result && $user_result->num_rows > 0) {
+          $message = "That email address seems to already have an account associated with it";
+        }
+
+      }
+      else if ($_POST['submit']=="Login") {
+        $login_email = filter_input( INPUT_POST, 'login_email', FILTER_SANITIZE_STRING );
+        $login_password = filter_input( INPUT_POST, 'login_password', FILTER_SANITIZE_STRING );
+
+        $user_query = "SELECT * FROM Users WHERE email = '$login_email'";
+
+        $user_result = $mysqli->query($user_query);
+        
+        //Nothing was entered in the form
+        if ($login_email == '' && $login_password == '') {
+            $login_message = null;
+        }
+        //This user doesn't exist in the database
+        else if ( $user_result && $user_result->num_rows == 0) {
+          $login_message =  "There is no user with that email";
+        } 
+        else if ( $user_result && $user_result->num_rows == 1) {
+
+          $row = $user_result->fetch_assoc();
+          $db_hash_password = $row['hashpassword'];
+          
+          if( password_verify( $login_password, $db_hash_password ) ) {
+            $_SESSION['user'] = $login_email;
+            $login_message_succ = "Login successful";
+          } else {
+            $login_message =  "Incorrect password";
+          }
+        } 
+
+      }
+    }
+
+  ?>
   <div class="clearfix borderbox" id="page"><!-- column -->
    <div class="position_content" id="page_position_content">
     <div class="browser_width colelem" id="u987-bw">
      <div id="u987"><!-- group -->
       <div class="clearfix" id="u987_align_to_page">
        <div class="clearfix grpelem" id="u992-4"><!-- content -->
-        <p>Have an account? Login</p>
+        <form method="post" action="">
+          <p>Have an account? <input id='login-submit' type='submit' name='submit' value='Login'></p>
+          <?php echo '<div id="login-message">'.$login_message.'</div>' ?>
+          <?php echo '<div id="login-message-succ">'.$login_message_succ.'</div>' ?>
+          <div id="pop-up">
+              Email: <input class="width1-border" type="text" name="login_email"> 
+              Password:  <input class="width1-border" type="text" name="login_password">
+          </div>
+        </form>
        </div>
       </div>
      </div>
@@ -55,9 +175,19 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
      <p id="u937-7">&nbsp;</p>
      <p id="u937-8">&nbsp;</p>
     </div>
-    <div class="rounded-corners clearfix colelem" id="u1003-4"><!-- content -->
-     <p id="u1003-2">GET STARTED</p>
     </div>
+    <form method="post" action="">
+      <div id="form">
+          Email: <input class="width1" type="text" name="email">  Password:  <input class="width2" type="text" name="password">
+          <br><br>First Name:  <input class="width1" type="text" name="firstname">  Last Name:  <input class="width2" type="text" name="lastname">
+          <br><br>NYSEG Account Number:  <input class="width1" type="text" name="nyseg"><br><br>  Home Address:  <input class="width3" type="text" name="address">
+          <br><br>Phone Number (optional):  <input class="width1" type="text" name="phone">
+      </div>
+       <?php echo '<div id="message">'.$message.'</div>' ?>
+      <div class="rounded-corners clearfix colelem" id="u1003-4"><!-- content -->
+       <p id="u1003-2">GET STARTED</p>
+      </div>
+    </form>
     <div class="browser_width colelem" id="u1009-bw">
      <div id="u1009"><!-- group -->
       <div class="clearfix" id="u1009_align_to_page">
@@ -135,6 +265,6 @@ Muse.Utils.transformMarkupToFixBrowserProblems();/* body */
 </script>
   <!-- RequireJS script -->
   <script src="scripts/require.js?crc=4159430777" type="text/javascript" async data-main="scripts/museconfig.js?crc=4179431180" onload="if (requirejs) requirejs.onError = function(requireType, requireModule) { if (requireType && requireType.toString && requireType.toString().indexOf && 0 <= requireType.toString().indexOf('#scripterror')) window.Muse.assets.check(); }" onerror="window.Muse.assets.check();"></script>
-    <script type="text/javascript" src="scripts/index.js"></script>
+  <script type="text/javascript" src="scripts/index.js"></script>
    </body>
 </html>

@@ -165,6 +165,17 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
               }
 
               echo "</div>";
+              $week = null;
+              if (isset($_GET["week"])){
+                  $week = $_GET["week"];
+              }
+
+              echo "</div>";
+
+
+              if ($week!=null) {
+
+              }
             ?>
           </div>
           <div id="month"></div>

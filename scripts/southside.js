@@ -72,6 +72,7 @@ d3.csv("daydata.csv", function(error, data) {
   data.forEach(function(d) {
       d.date = parseTimeDay(d.date);
       //console.log(d.date);
+      console.log(d.date);
       d.usage = +d.usage;
   });
 
