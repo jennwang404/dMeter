@@ -4,6 +4,11 @@
 	width: 200px;
 }
 
+.width1-border {
+	border: 1px solid black;
+	width: 200px;
+}
+
 .width2 {
 	width: 300px;
 }
@@ -13,8 +18,8 @@
 }
 
 #form {
-	font-family:muli, sans-serif;
-	font-weight:400;
+	font-family: muli, sans-serif;
+	font-weight: 400;
 	color: white;
 	display: none;
 }
@@ -26,8 +31,35 @@
 }
 
 #message {
-	font-family:muli, sans-serif;
-	font-weight:400;
+	font-family: muli, sans-serif;
+	font-weight: 400;
 	color: white;
 	text-align: center;
+}
+
+#login-message {
+	font-family: muli, sans-serif;
+	font-weight: 400;
+	color: #E64C66;
+	text-align: left;
+}
+
+#login-message-succ {
+	font-family: muli, sans-serif;
+	font-weight: 400;
+	color: #1BBC9B;
+	text-align: left;
+}
+
+#login-submit {
+	display: inline;
+	position: relative;
+	background-color: transparent;
+}
+
+#pop-up {
+	font-family: muli, sans-serif;
+	font-weight: 400;
+	color: #1BBC9B;
+	display: none;
 }

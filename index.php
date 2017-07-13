@@ -37,7 +37,6 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
    </head>
  <body>
   <?php
-
     //Get the connection info for the database
     require_once 'includes/config.php';
 
@@ -52,10 +51,11 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
     }
 
     $message = null;
+    $login_message = null;
+    $login_message_succ = null;
 
     if (isset($_POST['submit'])){
       if ($_POST['submit']=="SIGN UP") {
-        //Get username and password from login field
         $email = filter_input( INPUT_POST, 'email', FILTER_SANITIZE_STRING );
         $password = filter_input( INPUT_POST, 'password', FILTER_SANITIZE_STRING );
         $firstname = filter_input( INPUT_POST, 'firstname', FILTER_SANITIZE_STRING );
@@ -64,14 +64,9 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
         $address = filter_input( INPUT_POST, 'address', FILTER_SANITIZE_STRING );
         $phone = filter_input( INPUT_POST, 'phone', FILTER_SANITIZE_STRING );
 
-        //check that inputs are good here 
-
         $user_query = "SELECT * FROM Users WHERE email = '$email'";
 
         $user_result = $mysqli->query($user_query);
-        
-        //Uncomment the next line for debugging
-        //echo "<pre>" . print_r( $mysqli, true) . "</p>";
         
         //This user doesn't already exist in the database (no one with this email already)
         if ( $user_result && $user_result->num_rows == 0) {
@@ -114,31 +109,42 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
               $message = "Sign up successful";
             }
           }
-          //Debugging
-          //echo "<pre>" . print_r( $row, true) . "</p>";
-          
-          /*
-          $db_hash_password = $row['hashpassword'];
-          
-          if( password_verify( $password, $db_hash_password ) ) {
-            $db_username = $row['username'];
-            $_SESSION['user'] = $db_username;
-          }*/
+
         } else if ( $user_result && $user_result->num_rows > 0) {
           $message = "That email address seems to already have an account associated with it";
         }
 
-        /*
-        $add_message = null;
-        $error_message = null;*/
       }
-      /*
-      else if ($_POST['submit']=="Log out") {
-        unset($_SESSION['user']);
+      else if ($_POST['submit']=="Login") {
+        $login_email = filter_input( INPUT_POST, 'login_email', FILTER_SANITIZE_STRING );
+        $login_password = filter_input( INPUT_POST, 'login_password', FILTER_SANITIZE_STRING );
 
-        $add_message = null;
-        $error_message = null;
-      }*/
+        $user_query = "SELECT * FROM Users WHERE email = '$login_email'";
+
+        $user_result = $mysqli->query($user_query);
+        
+        //Nothing was entered in the form
+        if ($login_email == '' && $login_password == '') {
+            $login_message = null;
+        }
+        //This user doesn't exist in the database
+        else if ( $user_result && $user_result->num_rows == 0) {
+          $login_message =  "There is no user with that email";
+        } 
+        else if ( $user_result && $user_result->num_rows == 1) {
+
+          $row = $user_result->fetch_assoc();
+          $db_hash_password = $row['hashpassword'];
+          
+          if( password_verify( $login_password, $db_hash_password ) ) {
+            $_SESSION['user'] = $login_email;
+            $login_message_succ = "Login successful";
+          } else {
+            $login_message =  "Incorrect password";
+          }
+        } 
+
+      }
     }
 
   ?>
@@ -148,7 +154,15 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
      <div id="u987"><!-- group -->
       <div class="clearfix" id="u987_align_to_page">
        <div class="clearfix grpelem" id="u992-4"><!-- content -->
-        <p>Have an account? Login</p>
+        <form method="post" action="">
+          <p>Have an account? <input id='login-submit' type='submit' name='submit' value='Login'></p>
+          <?php echo '<div id="login-message">'.$login_message.'</div>' ?>
+          <?php echo '<div id="login-message-succ">'.$login_message_succ.'</div>' ?>
+          <div id="pop-up">
+              Email: <input class="width1-border" type="text" name="login_email"> 
+              Password:  <input class="width1-border" type="text" name="login_password">
+          </div>
+        </form>
        </div>
       </div>
      </div>
@@ -163,16 +177,16 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
     </div>
     </div>
     <form method="post" action="">
-    <div id="form">
-        Email: <input class="width1" type="text" name="email">  Password:  <input class="width2" type="text" name="password">
-        <br><br>First Name:  <input class="width1" type="text" name="firstname">  Last Name:  <input class="width2" type="text" name="lastname">
-        <br><br>NYSEG Account Number:  <input class="width1" type="text" name="nyseg"><br><br>  Home Address:  <input class="width3" type="text" name="address">
-        <br><br>Phone Number (optional):  <input class="width1" type="text" name="phone">
-    </div>
-     <?php echo '<div id="message">'.$message.'</div>' ?>
-    <div class="rounded-corners clearfix colelem" id="u1003-4"><!-- content -->
-     <p id="u1003-2">GET STARTED</p>
-    </div>
+      <div id="form">
+          Email: <input class="width1" type="text" name="email">  Password:  <input class="width2" type="text" name="password">
+          <br><br>First Name:  <input class="width1" type="text" name="firstname">  Last Name:  <input class="width2" type="text" name="lastname">
+          <br><br>NYSEG Account Number:  <input class="width1" type="text" name="nyseg"><br><br>  Home Address:  <input class="width3" type="text" name="address">
+          <br><br>Phone Number (optional):  <input class="width1" type="text" name="phone">
+      </div>
+       <?php echo '<div id="message">'.$message.'</div>' ?>
+      <div class="rounded-corners clearfix colelem" id="u1003-4"><!-- content -->
+       <p id="u1003-2">GET STARTED</p>
+      </div>
     </form>
     <div class="browser_width colelem" id="u1009-bw">
      <div id="u1009"><!-- group -->
