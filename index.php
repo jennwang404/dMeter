@@ -51,6 +51,87 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
       exit();
     }
 
+    $message = null;
+
+    if (isset($_POST['submit'])){
+      if ($_POST['submit']=="SIGN UP") {
+        //Get username and password from login field
+        $email = filter_input( INPUT_POST, 'email', FILTER_SANITIZE_STRING );
+        $password = filter_input( INPUT_POST, 'password', FILTER_SANITIZE_STRING );
+        $firstname = filter_input( INPUT_POST, 'firstname', FILTER_SANITIZE_STRING );
+        $lastname = filter_input( INPUT_POST, 'lastname', FILTER_SANITIZE_STRING );
+        $nyseg = filter_input( INPUT_POST, 'nyseg', FILTER_SANITIZE_STRING );
+        $address = filter_input( INPUT_POST, 'address', FILTER_SANITIZE_STRING );
+        $phone = filter_input( INPUT_POST, 'phone', FILTER_SANITIZE_STRING );
+
+        //check that inputs are good here 
+
+        //Check that this user doesn't already exist in the database (no one with this email already)
+        $user_query = "SELECT * FROM Users WHERE email = '$email'";
+
+        $user_result = $mysqli->query($user_query);
+        
+        //Uncomment the next line for debugging
+        //echo "<pre>" . print_r( $mysqli, true) . "</p>";
+        
+        if ( $user_result && $user_result->num_rows == 0) {
+
+          //Check that the email address entered is valid
+          if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $message = "Invalid email address";
+          } 
+          //Check that the first name entered is valid
+          else if (ctype_alpha(str_replace(' ', '', $firstname)) === false) {
+            $message = 'First name must contain letters and spaces only';
+          } 
+          //Check that the last name entered is valid
+          else if (ctype_alpha(str_replace(' ', '', $lastname)) === false) {
+            $message = 'Last name must contain letters and spaces only';
+          } 
+          //Check that the NYSEG Account Number entered is valid
+          else if (strlen($nyseg) != 10) {
+            $message = 'Invalid NYSEG account number';
+          } 
+          //Check that an address was entered
+          else if (strlen($address) == 0) {
+            $message = 'Please enter a valid home address';
+          } 
+          //Check that the phone number entered is valid
+          else if ($phone != null && (strlen($phone) != 10 || strlen($phone) != 11)) {
+            $message = 'Invalid phone number';
+          } 
+
+
+          else { //Else, everything is okay, add user to the database and echo a success message
+            $message = "Sign up successful";
+          }
+          //Debugging
+          //echo "<pre>" . print_r( $row, true) . "</p>";
+          
+          /*
+          $db_hash_password = $row['hashpassword'];
+          
+          if( password_verify( $password, $db_hash_password ) ) {
+            $db_username = $row['username'];
+            $_SESSION['user'] = $db_username;
+          }*/
+        } else if ( $user_result && $user_result->num_rows > 0) {
+          $message = "That email address seems to already have an account associated with it";
+        }
+
+        /*
+        $add_message = null;
+        $error_message = null;*/
+      }
+      /*
+      else if ($_POST['submit']=="Log out") {
+        unset($_SESSION['user']);
+
+        $add_message = null;
+        $error_message = null;
+      }*/
+    }
+
   ?>
   <div class="clearfix borderbox" id="page"><!-- column -->
    <div class="position_content" id="page_position_content">
@@ -71,9 +152,19 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
      <p id="u937-7">&nbsp;</p>
      <p id="u937-8">&nbsp;</p>
     </div>
+    </div>
+    <form method="post" action="">
+    <div id="form">
+        Email: <input class="width1" type="text" name="email">  Password:  <input class="width2" type="text" name="password">
+        <br><br>First Name:  <input class="width1" type="text" name="firstname">  Last Name:  <input class="width2" type="text" name="lastname">
+        <br><br>NYSEG Account Number:  <input class="width1" type="text" name="nyseg"><br><br>  Home Address:  <input class="width3" type="text" name="address">
+        <br><br>Phone Number (optional):  <input class="width1" type="text" name="phone">
+    </div>
+     <?php echo '<div id="message">'.$message.'</div>' ?>
     <div class="rounded-corners clearfix colelem" id="u1003-4"><!-- content -->
      <p id="u1003-2">GET STARTED</p>
     </div>
+    </form>
     <div class="browser_width colelem" id="u1009-bw">
      <div id="u1009"><!-- group -->
       <div class="clearfix" id="u1009_align_to_page">
@@ -151,6 +242,6 @@ Muse.Utils.transformMarkupToFixBrowserProblems();/* body */
 </script>
   <!-- RequireJS script -->
   <script src="scripts/require.js?crc=4159430777" type="text/javascript" async data-main="scripts/museconfig.js?crc=4179431180" onload="if (requirejs) requirejs.onError = function(requireType, requireModule) { if (requireType && requireType.toString && requireType.toString().indexOf && 0 <= requireType.toString().indexOf('#scripterror')) window.Muse.assets.check(); }" onerror="window.Muse.assets.check();"></script>
-    <script type="text/javascript" src="scripts/index.js"></script>
+  <script type="text/javascript" src="scripts/index.js"></script>
    </body>
 </html>
