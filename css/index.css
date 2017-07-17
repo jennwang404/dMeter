@@ -22,12 +22,15 @@
 	font-weight: 400;
 	color: white;
 	display: none;
+	text-align: left;
+	margin-left: 25%;
 }
 
 #submit {
 	background-color: transparent;
 	padding-top: 9px;
 	color: #1BBC9B;
+	text-align: center;
 }
 
 #message {

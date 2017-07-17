@@ -71,6 +71,9 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
 
     if (isset($_POST['submit']) && $_POST['submit']=="LOG OUT") {
       unset($_SESSION['user']);
+      $url = $_SERVER['REQUEST_URI'];
+      $newurl =  substr($url, 0, -11)."index.php";
+      echo '<script type="text/javascript">window.location ='."'".$newurl."'".'</script>';
     }
 
     if (isset($_SESSION['user']) && $user_result) {
