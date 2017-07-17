@@ -3,12 +3,14 @@
     $password = "";   
     $host = "localhost";
     $database="dMeter";
-    
-	$year = 2008;
+    $secondGraph = "temperature";
+	if (isset($_GET["secondGraph"])){
+		$secondGraph = $_GET["secondGraph"];
+	}
 	
     $conn = new mysqli($host, $username, $password, $database);
 	
-	$sql = "SELECT SUM(EnergyUse) AS EnergyUse, YEAR(Day) AS Year FROM energy_usage GROUP BY YEAR(Day)";
+	$sql = "SELECT SUM(EnergyUse) AS EnergyUse, AVG(temp) AS Temp, YEAR(t.day) AS Year FROM energy_usage e INNER JOIN $secondGraph t on DAY(t.day) = DAY(e.day) AND MONTH(t.day) = MONTH(e.day) AND YEAR(t.day) = YEAR(e.day)+9 GROUP BY YEAR(t.day)";
 	$result = $conn->query($sql);
 	
 	if ($result->num_rows > 0) {
