@@ -106,7 +106,7 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
             //echo $query;
             $result = $mysqli->query($query);
             if ($result){
-              $message = "Sign up successful";
+              $message = "Sign up successful. You may now log in";
             }
           }
 
@@ -139,6 +139,9 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
           if( password_verify( $login_password, $db_hash_password ) ) {
             $_SESSION['user'] = $login_email;
             $login_message_succ = "Login successful";
+            $url = $_SERVER['REQUEST_URI'];
+            $newurl =  substr($url, 0, -9)."account.php";
+            echo '<script type="text/javascript">window.location ='."'".$newurl."'".'</script>';
           } else {
             $login_message =  "Incorrect password";
           }
@@ -160,7 +163,7 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
           <?php echo '<div id="login-message-succ">'.$login_message_succ.'</div>' ?>
           <div id="pop-up">
               Email: <input class="width1-border" type="text" name="login_email"> 
-              Password:  <input class="width1-border" type="text" name="login_password">
+              Password:  <input class="width1-border" type="password" name="login_password">
           </div>
         </form>
        </div>
@@ -178,10 +181,13 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
     </div>
     <form method="post" action="">
       <div id="form">
-          Email: <input class="width1" type="text" name="email">  Password:  <input class="width2" type="text" name="password">
-          <br><br>First Name:  <input class="width1" type="text" name="firstname">  Last Name:  <input class="width2" type="text" name="lastname">
-          <br><br>NYSEG Account Number:  <input class="width1" type="text" name="nyseg"><br><br>  Home Address:  <input class="width3" type="text" name="address">
-          <br><br>Phone Number (optional):  <input class="width1" type="text" name="phone">
+          Email: <input class="width1" type="text" name="email"><br><br>
+          Password:  <input class="width2" type="text" name="password"><br><br>
+          First Name:  <input class="width1" type="text" name="firstname"><br><br>
+          Last Name:  <input class="width2" type="text" name="lastname"><br><br>
+          NYSEG Account Number:  <input class="width1" type="text" name="nyseg"><br><br>
+          Home Address:  <input class="width3" type="text" name="address"><br><br>
+          Phone Number (optional):  <input class="width1" type="text" name="phone"><br><br>
       </div>
        <?php echo '<div id="message">'.$message.'</div>' ?>
       <div class="rounded-corners clearfix colelem" id="u1003-4"><!-- content -->
