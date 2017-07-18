@@ -65,6 +65,8 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
     }
 
     $user = $_SESSION['user'];
+
+    $message = null;
     
     $user_query = "SELECT * FROM Users WHERE email = '$user'";
 
@@ -95,47 +97,45 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
       $oldphone = $row['phone'];
 
       $updatequery = "UPDATE Users SET ";
-      $error_message = null;
-      $message = null;
 
       if ($newuser !== $olduser) {
         if (!filter_var($newuser, FILTER_VALIDATE_EMAIL)) {
-          $error_message = "Invalid email address";
+          $message = "Invalid email address";
         } else {
           $updatequery = $updatequery."email='$newuser', ";
         }
       }
       if ($newfirstname !== $oldfirstname) {
         if (ctype_alpha(str_replace(' ', '', $newfirstname)) === false) {
-          $error_message = 'First name must contain letters and spaces only';
+          $message = 'First name must contain letters and spaces only';
         } else {
           $updatequery = $updatequery."firstname='$newfirstname', ";
         }
       }
       if ($newlastname !== $oldlastname) {
         if (ctype_alpha(str_replace(' ', '', $newlastname)) === false) {
-            $error_message = 'Last name must contain letters and spaces only';
+            $message = 'Last name must contain letters and spaces only';
         } else {
           $updatequery = $updatequery."lastname='$newlastname', ";
         }
       }
       if ($newnyseg !== $oldnyseg) {
         if (strlen($newnyseg) != 10) {
-          $error_message = 'Invalid NYSEG account number';
+          $message = 'Invalid NYSEG account number';
         } else {
           $updatequery = $updatequery."nyseg='$newnyseg', ";
         }
       }
       if ($newaddress !== $oldaddress) {
         if (strlen($newaddress) == 0) {
-          $error_message = 'Please enter a valid home address';
+          $message = 'Please enter a valid home address';
         } else {
           $updatequery = $updatequery."address='$newaddress', ";
         }
       }
       if ($newphone !== $oldphone) {
-        if ($newphone != null && (strlen($newphone) != 10 || strlen($newphone) != 11)) {
-          $error_message = 'Invalid phone number';
+        if ($newphone != null && strlen($newphone) != 10 && strlen($newphone) != 11) {
+          $message = 'Invalid phone number';
         } else {
           $updatequery = $updatequery."phone='$newphone', ";
         }
@@ -143,23 +143,21 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
 
       if (str_replace(' ', '', $newpassword) != "") {
         if (str_replace(' ', '', $newpassword) === str_replace(' ', '', $newpasswordconfirm)) {
-          $new_hashed_password = password_hash($newpassword, PASSWORD_DEFAULT);
+          $new_hashed_password = password_hash(str_replace(' ', '', $newpassword), PASSWORD_DEFAULT);
           $updatequery = $updatequery."hashpassword='$new_hashed_password', ";
         } else {
-          $error_message = "New passwords don't match";
+          $message = "New passwords don't match";
         }
       }
 
       $updatequery = substr($updatequery, 0, -2)." WHERE email='$olduser'";
 
-      if ($error_message == null) {
+      if ($message == null) {
         $result = $mysqli->query($updatequery);
         if ($result){
           $message = "Update successful";
-          echo $message;
+          $_SESSION['user'] = $newuser;
         }
-      } else {
-          echo $error_message;
       }
     }
 
@@ -170,24 +168,62 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
         $lastname = $row['lastname'];
         $nyseg = $row['nyseg'];
         $address = $row['address'];
+
         if ($row['phone'] != 0) {
           $phone = $row['phone'];
         } else {
           $phone = "";
         }
 
-        echo '<form method="post" action="">';
-        echo '<div id="user-info">';
-        echo 'User Information:<br><br><br>';
-        echo 'Name: <input id="edit-firstname" class="account" type="text" name="firstname" value='.$firstname.">";
-        echo ' <input id="edit-lastname" class="account" type="text" name="lastname" value='.$lastname."><br>";
-        echo 'Username/email: <input id="edit-email" class="account" type="text" name="email" value='.$user."><br>";
-        echo 'NYSEG Account Number: <input id="edit-nyseg" class="account" type="text" name="nyseg" value='.$nyseg."><br>";
-        echo 'Home Address: <input id="edit-address" class="account" type="text" name="address" value='.'"'.$address.'"'."><br>";
-        echo 'Phone number: <input id="edit-phone" class="account" type="text" name="phone" value='.$phone."><br><br>";
-        echo 'New Password: <input id="edit-password" class="account" type="text" name="password" value="       "><br>';
-        echo 'Confirm New Password: <input id="edit-password-confirm" class="account" type="text" name="passwordconfirm" value="      "><br><br>';
-        echo '<div id="submit-button-div"><input id="edit-submit" type="submit" name="submit" value="Update Information"></div></div></form>';
+        //The user hasn't clicked the Update Information button yet
+        if ($row != null && $message !== "Update successful") {
+          echo '<form method="post" action="">';
+          echo '<div id="user-info">';
+          echo 'User Information:<br><br><br>';
+          echo '<div id="message">'.$message.'</div>';
+          echo 'Name: <input id="edit-firstname" class="account" type="text" name="firstname" value='.$firstname.">";
+          echo ' <input id="edit-lastname" class="account" type="text" name="lastname" value='.$lastname."><br>";
+          echo 'Username/email: <input id="edit-email" class="account" type="text" name="email" value='.$user."><br>";
+          echo 'NYSEG Account Number: <input id="edit-nyseg" class="account" type="text" name="nyseg" value='.$nyseg."><br>";
+          echo 'Home Address: <input id="edit-address" class="account" type="text" name="address" value='.'"'.$address.'"'."><br>";
+          echo 'Phone number: <input id="edit-phone" class="account" type="text" name="phone" value='.$phone."><br><br>";
+          echo 'New Password: <input id="edit-password" class="account" type="text" name="password" value="       "><br>';
+          echo 'Confirm New Password: <input id="edit-password-confirm" class="account" type="text" name="passwordconfirm" value="      "><br><br>';
+          echo '<div id="submit-button-div"><input id="edit-submit" type="submit" name="submit" value="Update Information"></div></div></form>';
+        } 
+        /* The user has clicked the Update Information button and all the inputs check out. The db has successfully been updated and
+            the session variable changed if needed */
+        else if ($message == "Update successful") {
+          echo '<form method="post" action="">';
+          echo '<div id="user-info">';
+          echo 'User Information:<br><br><br>';
+          echo '<div id="message">'.$message.'</div>';
+          echo 'Name: <input id="edit-firstname" class="account" type="text" name="firstname" value='.$newfirstname.">";
+          echo ' <input id="edit-lastname" class="account" type="text" name="lastname" value='.$newlastname."><br>";
+          echo 'Username/email: <input id="edit-email" class="account" type="text" name="email" value='.$newuser."><br>";
+          echo 'NYSEG Account Number: <input id="edit-nyseg" class="account" type="text" name="nyseg" value='.$newnyseg."><br>";
+          echo 'Home Address: <input id="edit-address" class="account" type="text" name="address" value='.'"'.$newaddress.'"'."><br>";
+          echo 'Phone number: <input id="edit-phone" class="account" type="text" name="phone" value='.$newphone."><br><br>";
+          echo 'New Password: <input id="edit-password" class="account" type="text" name="password" value="       "><br>';
+          echo 'Confirm New Password: <input id="edit-password-confirm" class="account" type="text" name="passwordconfirm" value="      "><br><br>';
+          echo '<div id="submit-button-div"><input id="edit-submit" type="submit" name="submit" value="Update Information"></div></div></form>';
+        } 
+        // The user has clicked the Update Information button but there was an error in at least one of the inputs 
+        else {
+          echo '<form method="post" action="">';
+          echo '<div id="user-info">';
+          echo 'User Information:<br><br><br>';
+          echo '<div id="message">'.$message.'</div>';
+          echo 'Name: <input id="edit-firstname" class="account" type="text" name="firstname" value='.$oldfirstname.">";
+          echo ' <input id="edit-lastname" class="account" type="text" name="lastname" value='.$oldlastname."><br>";
+          echo 'Username/email: <input id="edit-email" class="account" type="text" name="email" value='.$olduser."><br>";
+          echo 'NYSEG Account Number: <input id="edit-nyseg" class="account" type="text" name="nyseg" value='.$oldnyseg."><br>";
+          echo 'Home Address: <input id="edit-address" class="account" type="text" name="address" value='.'"'.$oldaddress.'"'."><br>";
+          echo 'Phone number: <input id="edit-phone" class="account" type="text" name="phone" value='.$oldphone."><br><br>";
+          echo 'New Password: <input id="edit-password" class="account" type="text" name="password" value="       "><br>';
+          echo 'Confirm New Password: <input id="edit-password-confirm" class="account" type="text" name="passwordconfirm" value="      "><br><br>';
+          echo '<div id="submit-button-div"><input id="edit-submit" type="submit" name="submit" value="Update Information"></div></div></form>';
+        }
     }
 
   ?>

@@ -96,7 +96,7 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
             $message = 'Please enter a valid home address';
           } 
           //Check that the phone number entered is valid
-          else if ($phone != null && (strlen($phone) != 10 || strlen($phone) != 11)) {
+          else if ($phone != null && strlen($phone) != 10 && strlen($phone) != 11) {
             $message = 'Invalid phone number';
           } 
           //Everything is okay, add user to the database and echo a success message
@@ -144,6 +144,7 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
             echo '<script type="text/javascript">window.location ='."'".$newurl."'".'</script>';
           } else {
             $login_message =  "Incorrect password";
+            echo password_hash($login_password, PASSWORD_DEFAULT);
           }
         } 
 
