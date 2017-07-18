@@ -163,7 +163,11 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
       <div class="clearfix" id="u987_align_to_page">
        <div class="clearfix grpelem" id="u992-4"><!-- content -->
         <form method="post" action="">
-          <p>Have an account? <input id='login-submit' type='submit' name='submit' value='Login'></p>
+          <?php 
+            if (!isset($_SESSION['user'])) {
+              echo "<p>Have an account? <input id='login-submit' type='submit' name='submit' value='Login'></p>";
+            }
+          ?>
           <?php echo '<div id="login-message">'.$login_message.'</div>' ?>
           <?php echo '<div id="login-message-succ">'.$login_message_succ.'</div>' ?>
           <div id="pop-up">
