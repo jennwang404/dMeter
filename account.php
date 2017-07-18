@@ -7,6 +7,7 @@
   <meta name="generator" content="2017.0.1.363"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   
+  <script src="scripts/stretchy.min.js" async></script>
   <script type="text/javascript">
    // Update the 'nojs'/'js' class on the html node
 document.documentElement.className = document.documentElement.className.replace(/\bnojs\b/g, 'js');
@@ -74,6 +75,92 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
       $url = $_SERVER['REQUEST_URI'];
       $newurl =  substr($url, 0, -11)."index.php";
       echo '<script type="text/javascript">window.location ='."'".$newurl."'".'</script>';
+    } else if (isset($_POST['submit']) && $_POST['submit']=="Update Information") {
+      
+      $newuser = $_POST['email'];
+      $newfirstname = $_POST['firstname'];
+      $newlastname = $_POST['lastname'];
+      $newnyseg = $_POST['nyseg'];
+      $newaddress = $_POST['address'];
+      $newphone = $_POST['phone'];
+      $newpassword = $_POST['password'];
+      $newpasswordconfirm = $_POST['passwordconfirm'];
+
+      $row = $user_result->fetch_assoc();
+      $olduser = $row['email'];
+      $oldfirstname = $row['firstname'];
+      $oldlastname = $row['lastname'];
+      $oldnyseg = $row['nyseg'];
+      $oldaddress = $row['address'];
+      $oldphone = $row['phone'];
+
+      $updatequery = "UPDATE Users SET ";
+      $error_message = null;
+      $message = null;
+
+      if ($newuser !== $olduser) {
+        if (!filter_var($newuser, FILTER_VALIDATE_EMAIL)) {
+          $error_message = "Invalid email address";
+        } else {
+          $updatequery = $updatequery."email='$newuser', ";
+        }
+      }
+      if ($newfirstname !== $oldfirstname) {
+        if (ctype_alpha(str_replace(' ', '', $newfirstname)) === false) {
+          $error_message = 'First name must contain letters and spaces only';
+        } else {
+          $updatequery = $updatequery."firstname='$newfirstname', ";
+        }
+      }
+      if ($newlastname !== $oldlastname) {
+        if (ctype_alpha(str_replace(' ', '', $newlastname)) === false) {
+            $error_message = 'Last name must contain letters and spaces only';
+        } else {
+          $updatequery = $updatequery."lastname='$newlastname', ";
+        }
+      }
+      if ($newnyseg !== $oldnyseg) {
+        if (strlen($newnyseg) != 10) {
+          $error_message = 'Invalid NYSEG account number';
+        } else {
+          $updatequery = $updatequery."nyseg='$newnyseg', ";
+        }
+      }
+      if ($newaddress !== $oldaddress) {
+        if (strlen($newaddress) == 0) {
+          $error_message = 'Please enter a valid home address';
+        } else {
+          $updatequery = $updatequery."address='$newaddress', ";
+        }
+      }
+      if ($newphone !== $oldphone) {
+        if ($newphone != null && (strlen($newphone) != 10 || strlen($newphone) != 11)) {
+          $error_message = 'Invalid phone number';
+        } else {
+          $updatequery = $updatequery."phone='$newphone', ";
+        }
+      }
+
+      if (str_replace(' ', '', $newpassword) != "") {
+        if (str_replace(' ', '', $newpassword) === str_replace(' ', '', $newpasswordconfirm)) {
+          $new_hashed_password = password_hash($newpassword, PASSWORD_DEFAULT);
+          $updatequery = $updatequery."hashpassword='$new_hashed_password', ";
+        } else {
+          $error_message = "New passwords don't match";
+        }
+      }
+
+      $updatequery = substr($updatequery, 0, -2)." WHERE email='$olduser'";
+
+      if ($error_message == null) {
+        $result = $mysqli->query($updatequery);
+        if ($result){
+          $message = "Update successful";
+          echo $message;
+        }
+      } else {
+          echo $error_message;
+      }
     }
 
     if (isset($_SESSION['user']) && $user_result) {
@@ -83,16 +170,24 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
         $lastname = $row['lastname'];
         $nyseg = $row['nyseg'];
         $address = $row['address'];
-        $phone = $row['phone'];
+        if ($row['phone'] != 0) {
+          $phone = $row['phone'];
+        } else {
+          $phone = "";
+        }
 
+        echo '<form method="post" action="">';
         echo '<div id="user-info">';
         echo 'User Information:<br><br><br>';
-        echo 'Name: '.$firstname." ".$lastname.'<br><br>';
-        echo 'Username/email: '.$user.'<br><br>';
-        echo 'NYSEG Account Number: '.$nyseg.'<br><br>';
-        echo 'Home Address: '.$address.'<br><br>';
-        echo 'Phone number: '.$phone;
-        echo '</div>';
+        echo 'Name: <input id="edit-firstname" class="account" type="text" name="firstname" value='.$firstname.">";
+        echo ' <input id="edit-lastname" class="account" type="text" name="lastname" value='.$lastname."><br>";
+        echo 'Username/email: <input id="edit-email" class="account" type="text" name="email" value='.$user."><br>";
+        echo 'NYSEG Account Number: <input id="edit-nyseg" class="account" type="text" name="nyseg" value='.$nyseg."><br>";
+        echo 'Home Address: <input id="edit-address" class="account" type="text" name="address" value='.'"'.$address.'"'."><br>";
+        echo 'Phone number: <input id="edit-phone" class="account" type="text" name="phone" value='.$phone."><br><br>";
+        echo 'New Password: <input id="edit-password" class="account" type="text" name="password" value="       "><br>';
+        echo 'Confirm New Password: <input id="edit-password-confirm" class="account" type="text" name="passwordconfirm" value="      "><br><br>';
+        echo '<div id="submit-button-div"><input id="edit-submit" type="submit" name="submit" value="Update Information"></div></div></form>';
     }
 
   ?>
@@ -119,5 +214,6 @@ Muse.Utils.transformMarkupToFixBrowserProblems();/* body */
 </script>
   <!-- RequireJS script -->
   <script src="scripts/require.js?crc=4159430777" type="text/javascript" async data-main="scripts/museconfig.js?crc=4179431180" onload="if (requirejs) requirejs.onError = function(requireType, requireModule) { if (requireType && requireType.toString && requireType.toString().indexOf && 0 <= requireType.toString().indexOf('#scripterror')) window.Muse.assets.check(); }" onerror="window.Muse.assets.check();"></script>
+  <script type="text/javascript" src="scripts/account.js"></script>
    </body>
 </html>

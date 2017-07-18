@@ -16,3 +16,32 @@
 	background-color: transparent;
 	color: #FFFFFF;
 }
+
+.account {
+	cursor: pointer;
+	color: white;
+	background-color: transparent;
+}
+
+#edit-submit {
+	padding-top: 7px;
+	color: #1BBC9B;
+	background-color: transparent;
+}
+
+#submit-button-div {
+    z-index: 21;
+    min-height: 36px;
+    background-color: #FFFFFF;
+    border-radius: 7px;
+    line-height: 18px;
+    text-align: center;
+    font-size: 15px;
+    color: #1BBC9B;
+    font-family: muli, sans-serif;
+    font-weight: 400;
+    margin-top: 15px;
+    position: relative;
+    width: 17.4%;
+    margin-left: 43.03%;
+}
