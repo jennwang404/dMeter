@@ -11,14 +11,14 @@
 document.documentElement.className = document.documentElement.className.replace(/\bnojs\b/g, 'js');
 
 // Check that all required assets are uploaded and up-to-date
-if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required":["museutils.js", "museconfig.js", "jquery.watch.js", "require.js", "jquery.musepolyfill.bgsize.js", "webpro.js", "musewpslideshow.js", "jquery.museoverlay.js", "touchswipe.js", "lansing.css"], "outOfDate":[]};
+if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required":["museutils.js", "museconfig.js", "jquery.watch.js", "require.js", "jquery.musepolyfill.bgsize.js", "webpro.js", "musewpslideshow.js", "jquery.museoverlay.js", "touchswipe.js", "northside.css"], "outOfDate":[]};
 </script>
   
-  <title>Lansing</title>
+  <title>Northside</title>
   <!-- CSS -->
   <link rel="stylesheet" type="text/css" href="css/site_global.css?crc=193633137"/>
   <link rel="stylesheet" type="text/css" href="css/master_a-master.css?crc=238735217"/>
-  <link rel="stylesheet" type="text/css" href="css/lansing.css?crc=3959280708" id="pagesheet"/>
+  <link rel="stylesheet" type="text/css" href="css/northside.css?crc=4125203635" id="pagesheet"/>
   <!-- Other scripts -->
   <script type="text/javascript">
    var __adobewebfontsappname__ = "muse";
@@ -35,8 +35,10 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
     <div class="browser_width colelem" id="u108-bw">
      <div id="u108"><!-- group -->
       <div class="clearfix" id="u108_align_to_page">
-       <div class="clearfix grpelem" id="u114-4"><!-- content -->
-        <p id="u114-2"><input id='logout-submit' type='submit' name='submit' value='LOG OUT'></p>
+       <div class="rounded-corners clearfix grpelem" id="u114-4"><!-- content -->
+        <form method="post" action="">
+          <p id="u114-2"><input id='logout-submit' type='submit' name='submit' value='LOG OUT'></p>
+        </form>
        </div>
       </div>
      </div>
@@ -46,42 +48,54 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
      <a class="nonblock nontext clearfix grpelem" id="u129-4" href="account.php"><!-- content --><p>my account</p></a>
      <a class="nonblock nontext clearfix grpelem" id="u132-4" href="techsupport.html"><!-- content --><p>technical support</p></a>
     </div>
-    <div class="PamphletWidget clearfix colelem" id="pamphletu810"><!-- none box -->
-     <div class="popup_anchor" id="u821popup">
-      <div class="ContainerGroup clearfix" id="u821"><!-- stack box -->
-       <div class="Container shadow clearfix grpelem" id="u822"><!-- column -->
-        <div class="museBGSize colelem" id="u824"><!-- simple frame --></div>
-        <div class="clearfix colelem" id="u823-4"><!-- content -->
-         <p>The unusual energy spike costs you $40. You may spend 23% more utility than usual in this month.</p>
-        </div>
-       </div>
-       <div class="Container invi shadow clearfix grpelem" id="u828"><!-- column -->
-        <div class="museBGSize colelem" id="u830"><!-- simple frame --></div>
-        <div class="clearfix colelem" id="u829-4"><!-- content -->
+
+    <?php
+
+      if (isset($_POST['submit']) && $_POST['submit']=="LOG OUT") {
+        unset($_SESSION['user']);
+        $url = $_SERVER['REQUEST_URI'];
+        $newurl =  substr($url, 0, -13)."index.php";
+        echo '<script type="text/javascript">window.location ='."'".$newurl."'".'</script>';
+      }
+
+    ?>
+
+    <div class="PamphletWidget clearfix colelem" id="pamphletu741"><!-- none box -->
+     <div class="popup_anchor" id="u752popup">
+      <div class="ContainerGroup clearfix" id="u752"><!-- stack box -->
+       <div class="Container shadow clearfix grpelem" id="u753"><!-- column -->
+        <div class="museBGSize colelem" id="u755"><!-- simple frame --></div>
+        <div class="clearfix colelem" id="u754-4"><!-- content -->
          <p>You help to beautify the environment by saving 325 kWh this month.</p>
         </div>
        </div>
-       <div class="Container invi shadow clearfix grpelem" id="u825"><!-- column -->
-        <div class="museBGSize colelem" id="u827"><!-- simple frame --></div>
-        <div class="clearfix colelem" id="u826-4"><!-- content -->
-         <p>So far, you owe NYSEG $134.56 by using 1534 kWh.</p>
+       <div class="Container invi shadow clearfix grpelem" id="u759"><!-- column -->
+        <div class="museBGSize colelem" id="u761"><!-- simple frame --></div>
+        <div class="clearfix colelem" id="u760-4"><!-- content -->
+         <p>The unusual energy spike costs you $40. You may spend 23% more utility than usual in this month.</p>
+        </div>
+       </div>
+       <div class="Container invi shadow clearfix grpelem" id="u756"><!-- column -->
+        <div class="museBGSize colelem" id="u758"><!-- simple frame --></div>
+        <div class="clearfix colelem" id="u757-4"><!-- content -->
+         <p>So far, you owe NYSEG $76.34 by using 1156 kWh.</p>
         </div>
        </div>
       </div>
      </div>
-     <div class="ThumbGroup clearfix grpelem" id="u815"><!-- none box -->
-      <div class="popup_anchor" id="u816popup">
-       <div class="Thumb popup_element rounded-corners" id="u816"><!-- simple frame --></div>
+     <div class="ThumbGroup clearfix grpelem" id="u746"><!-- none box -->
+      <div class="popup_anchor" id="u747popup">
+       <div class="Thumb popup_element rounded-corners" id="u747"><!-- simple frame --></div>
       </div>
-      <div class="popup_anchor" id="u818popup">
-       <div class="Thumb popup_element rounded-corners" id="u818"><!-- simple frame --></div>
+      <div class="popup_anchor" id="u749popup">
+       <div class="Thumb popup_element rounded-corners" id="u749"><!-- simple frame --></div>
       </div>
-      <div class="popup_anchor" id="u817popup">
-       <div class="Thumb popup_element rounded-corners" id="u817"><!-- simple frame --></div>
+      <div class="popup_anchor" id="u748popup">
+       <div class="Thumb popup_element rounded-corners" id="u748"><!-- simple frame --></div>
       </div>
      </div>
     </div>
-    <div class="verticalspacer" data-offset-top="656" data-content-above-spacer="656" data-content-below-spacer="62"></div>
+    <div class="verticalspacer" data-offset-top="656" data-content-above-spacer="655" data-content-below-spacer="62"></div>
    </div>
   </div>
   <!-- Other scripts -->
@@ -97,7 +111,7 @@ Muse.Utils.prepHyperlinks(true);/* body */
 Muse.Utils.resizeHeight('.browser_width');/* resize height */
 Muse.Utils.requestAnimationFrame(function() { $('body').addClass('initialized'); });/* mark body as initialized */
 Muse.Utils.fullPage('#page');/* 100% height page */
-Muse.Utils.initWidget('#pamphletu810', ['#bp_infinity'], function(elem) { return new WebPro.Widget.ContentSlideShow(elem, {contentLayout_runtime:'stack',event:'mouseover',deactivationEvent:'none',autoPlay:false,displayInterval:3000,transitionStyle:'fading',transitionDuration:0,hideAllContentsFirst:false,shuffle:false,enableSwipe:true,resumeAutoplay:true,resumeAutoplayInterval:3000,playOnce:false,autoActivate_runtime:false}); });/* #pamphletu810 */
+Muse.Utils.initWidget('#pamphletu741', ['#bp_infinity'], function(elem) { return new WebPro.Widget.ContentSlideShow(elem, {contentLayout_runtime:'stack',event:'mouseover',deactivationEvent:'none',autoPlay:false,displayInterval:3000,transitionStyle:'fading',transitionDuration:0,hideAllContentsFirst:false,shuffle:false,enableSwipe:true,resumeAutoplay:true,resumeAutoplayInterval:3000,playOnce:false,autoActivate_runtime:false}); });/* #pamphletu741 */
 Muse.Utils.showWidgetsWhenReady();/* body */
 Muse.Utils.transformMarkupToFixBrowserProblems();/* body */
 }catch(b){if(b&&"function"==typeof b.notify?b.notify():Muse.Assert.fail("Error calling selector function: "+b),false)throw b;}})})};

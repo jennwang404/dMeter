@@ -46,6 +46,13 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
       exit();
     }
 
+    if (isset($_POST['submit']) && $_POST['submit']=="LOG OUT") {
+      unset($_SESSION['user']);
+      $url = $_SERVER['REQUEST_URI'];
+      $newurl =  substr($url, 0, -13)."index.php";
+      echo '<script type="text/javascript">window.location ='."'".$newurl."'".'</script>';
+    }
+
   ?>
   <div class="clearfix borderbox" id="page"><!-- column -->
    <div class="position_content" id="page_position_content">
@@ -53,7 +60,9 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
      <div id="u108"><!-- group -->
       <div class="clearfix" id="u108_align_to_page">
        <div class="clearfix grpelem" id="u114-4"><!-- content -->
-        <p id="u114-2">LOG OUT</p>
+        <form method="post" action="">
+          <p id="u114-2"><input id='logout-submit' type='submit' name='submit' value='LOG OUT'></p>
+        </form>
        </div>
       </div>
      </div>

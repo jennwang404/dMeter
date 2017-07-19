@@ -36,7 +36,9 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
      <div id="u108"><!-- group -->
       <div class="clearfix" id="u108_align_to_page">
        <div class="clearfix grpelem" id="u114-4"><!-- content -->
-        <p id="u114-2"><input id='logout-submit' type='submit' name='submit' value='LOG OUT'></p>
+        <form method="post" action="">
+          <p id="u114-2"><input id='logout-submit' type='submit' name='submit' value='LOG OUT'></p>
+        </form>
        </div>
       </div>
      </div>
@@ -46,6 +48,16 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
      <a class="nonblock nontext clearfix grpelem" id="u129-4" href="account.php"><!-- content --><p>my account</p></a>
      <a class="nonblock nontext clearfix grpelem" id="u132-4" href="techsupport.html"><!-- content --><p>technical support</p></a>
     </div>
+    <?php
+
+      if (isset($_POST['submit']) && $_POST['submit']=="LOG OUT") {
+        unset($_SESSION['user']);
+        $url = $_SERVER['REQUEST_URI'];
+        $newurl =  substr($url, 0, -11)."index.php";
+        echo '<script type="text/javascript">window.location ='."'".$newurl."'".'</script>';
+      }
+
+    ?>
     <div class="PamphletWidget clearfix colelem" id="pamphletu810"><!-- none box -->
      <div class="popup_anchor" id="u821popup">
       <div class="ContainerGroup clearfix" id="u821"><!-- stack box -->

@@ -135,20 +135,70 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
 
           $row = $user_result->fetch_assoc();
           $db_hash_password = $row['hashpassword'];
+          $db_address = strtoupper($row["address"]);
           
           if( password_verify( $login_password, $db_hash_password ) ) {
             $_SESSION['user'] = $login_email;
             $login_message_succ = "Login successful";
             $url = $_SERVER['REQUEST_URI'];
+
+
+            //Redirect user to a different page depending on what region they're from
+
+            $lansing_query = "SELECT * FROM Location WHERE region = 'Lansing'";
+            $lansing_result = $mysqli->query($lansing_query);
+            $lansing_addresses = array();
+            while ($lansing_row = $lansing_result->fetch_assoc()) {
+                array_push($lansing_addresses, $lansing_row["Street_Name"]);
+            }
+
+            $northside_query = "SELECT * FROM Location WHERE region = 'North'";
+            $northside_result = $mysqli->query($northside_query);
+            $northside_addresses = array();
+            while ($northside_row = $northside_result->fetch_assoc()) {
+                array_push($northside_addresses, $northside_row["Street_Name"]);
+            }
+
+            $southside_query = "SELECT * FROM Location WHERE region = 'South'";
+            $southside_result = $mysqli->query($southside_query);
+            $southside_addresses = array();
+            while ($southside_row = $southside_result->fetch_assoc()) {
+                array_push($southside_addresses, $southside_row["Street_Name"]);
+            }
+
+            $user_region = null;
+            foreach ($lansing_addresses as $address) {
+              if (strpos($db_address, $address) !== false) {
+                $user_region = 'lansing';
+              }
+            }
+            foreach ($northside_addresses as $address) {
+              if (strpos($db_address, $address) !== false) {
+                $user_region = 'northside';
+              }
+            }
+            foreach ($southside_addresses as $address) {
+              if (strpos($db_address, $address) !== false) {
+                $user_region = 'southside';
+              }
+            }
+
             if (substr($url, -9) == "index.php") {
-              $newurl =  substr($url, 0, -9)."account.php";
+              if ($user_region == "southside") {
+                $newurl =  substr($url, 0, -9).$user_region.".php";
+              } else {
+                $newurl =  substr($url, 0, -9).$user_region.".html";
+              }
             } else {
-              $newurl = $url."account.php";
+              if ($user_region == "southside") {
+                $newurl = $url.$user_region.".php";
+              } else {
+                $newurl =  substr($url, 0, -9).$user_region.".html";
+              }
             }
             echo '<script type="text/javascript">window.location ='."'".$newurl."'".'</script>';
           } else {
             $login_message =  "Incorrect password";
-            echo password_hash($login_password, PASSWORD_DEFAULT);
           }
         } 
 
