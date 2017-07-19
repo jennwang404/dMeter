@@ -2,9 +2,9 @@
 <div class = "card">
 		<div class = "contain">
 			<div class = "buttons">
-				<span class = "btn" id = "button0" onclick = "changeGraph('yeardata.php', 0)">year</span> 
-				<span class = "btn" id = "button1" onclick = "changeGraph('monthdata.php', 1)">month</span> 
-				<span class = "btn" id = "button2" onclick = "changeGraph('yeardata.php', 2)">week</span> 
+				<span class = "btn" id = "button0" onclick = "plotGraph('yeardata.php', 0)">year</span> 
+				<span class = "btn" id = "button1" onclick = "plotGraph('monthdata.php', 1)">month</span> 
+				<span class = "btn" id = "button2" onclick = "plotGraph('yeardata.php', 2)">week</span> 
 				<!--span class = "btn" id = "button3" onclick = "changeGraph('yeardata.php', 3)">day</span--> 
 			</div>
 			<div id = "svg">
@@ -18,7 +18,7 @@
 					Scales are still not working will be fixed
 					Functions for second line graph is still not done
 				*/
-				changeGraph("monthdata.php",1);
+				plotGraph("monthdata.php",1);
 			</script>
 			<div id = "notifs">
 				<h1>[Insert whatever title needed for this section]</h1>
