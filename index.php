@@ -184,17 +184,9 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
             }
 
             if (substr($url, -9) == "index.php") {
-              if ($user_region == "southside") {
                 $newurl =  substr($url, 0, -9).$user_region.".php";
-              } else {
-                $newurl =  substr($url, 0, -9).$user_region.".html";
-              }
             } else {
-              if ($user_region == "southside") {
                 $newurl = $url.$user_region.".php";
-              } else {
-                $newurl =  substr($url, 0, -9).$user_region.".html";
-              }
             }
             echo '<script type="text/javascript">window.location ='."'".$newurl."'".'</script>';
           } else {
