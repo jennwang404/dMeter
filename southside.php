@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
   <script type="text/javascript" src="scripts/d3.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
   <script type="text/javascript">
    // Update the 'nojs'/'js' class on the html node
 document.documentElement.className = document.documentElement.className.replace(/\bnojs\b/g, 'js');
@@ -21,6 +22,8 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
   <link rel="stylesheet" type="text/css" href="css/site_global.css?crc=193633137"/>
   <link rel="stylesheet" type="text/css" href="css/master_a-master.css?crc=238735217"/>
   <link rel="stylesheet" type="text/css" href="css/southside.css?crc=4077041817" id="pagesheet"/>
+  <link rel="stylesheet" type="text/css" href="css/datavis.css"/>
+  
   <!-- Other scripts -->
   <script type="text/javascript">
    var __adobewebfontsappname__ = "muse";
@@ -68,6 +71,8 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
      </div>
     </div>
     <div class="clearfix colelem" id="pu120-4"><!-- group -->
+     <img class="grpelem" id="u120-4" alt="d.Meter" src="images/u120-4.png?crc=416918895" data-image-width="97"/><!-- rasterized frame -->
+     <a class="nonblock nontext clearfix grpelem" id="u129-4" href="account.php"><!-- content --><p>my account</p></a>
      <a href="index.php"><img class="grpelem" id="u120-4" alt="d.Meter" src="images/u120-4.png?crc=416918895" data-image-width="97"/></a><!-- rasterized frame -->
      <a class="nonblock nontext clearfix grpelem" id="u129-4" href="account.php"><!-- content --><p>my account</p></a>
      <a class="nonblock nontext clearfix grpelem" id="u132-4" href="techsupport.html"><!-- content --><p>technical support</p></a>
@@ -107,84 +112,35 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
       </div>
      </div>
     </div>
-    <div class="dataviz">
-        <button class="button" onclick="day_function()">Day</button>
-          <button class="button" onclick="week_function()">Week</button>
-          <button class="button" onclick="month_function()">Month</button>
-          <button class="button" onclick="year_function()">Year</button>
-          <div id="day">
-            <?php
-
-              //Selects all possible dates from the db
-              $query = "SELECT DISTINCT Day FROM Energy_Usage";
-              $result = mysqli_query($mysqli, $query) or die('Error querying database.');
-
-              echo "<div id='day-select'><form action='' method='get'><select name='day'>";
-              while ($row = mysqli_fetch_array($result)) {
-                echo '<option value="'.$row['Day'].'">'.$row['Day']."</option>";
-              }
-              echo "</select><input type='submit' onclick='day_function()'></form>";
-
-              $day = null;
-              if (isset($_GET["day"])){
-                $day = $_GET["day"];
-              }
-
-              echo "</div>";
-
-              if ($day!=null) {
-                //Selects Energy Usage data for this particular day
-                $query = "SELECT Hour, EnergyUse FROM Energy_Usage WHERE Day='$day'";
-                $result = mysqli_query($mysqli, $query) or die('Error querying database.');
-
-                $file_string = "date,usage\n";
-                while ($row = mysqli_fetch_array($result)) {
-                  if (strlen($row['Hour'])==1) {
-                    $file_string = $file_string.$day."-0".$row['Hour'].":00".",".$row['EnergyUse']."\n";
-                  } else {
-                    $file_string = $file_string.$day."-".$row['Hour'].":00".",".$row['EnergyUse']."\n";
-                  }
-                }
-
-                $file = fopen("daydata.csv","w");
-                fwrite($file, $file_string);
-                fclose($file);
-              }
-            ?>
-          </div>
-          <div id="week">
-            <?php
-
-              //Selects all possible dates from the db
-              $query = "SELECT DISTINCT Day FROM Energy_Usage";
-              $result = mysqli_query($mysqli, $query) or die('Error querying database.');
-
-              echo "<div id='week-select'><form action='' method='get'><select name='week'>";
-              $i = 0;
-              while ($row = mysqli_fetch_array($result)) {
-                if (($i-1)%7==0){
-                  echo '<option value="'.$row['Day'].'">'.$row['Day']."</option>";
-                }
-                $i=$i+1;
-              }
-              echo "</select><input type='submit' onclick='week_function()'></form>";
-
-              $week = null;
-              if (isset($_GET["week"])){
-                  $week = $_GET["week"];
-              }
-
-              echo "</div>";
-
-
-              if ($week!=null) {
-
-              }
-            ?>
-          </div>
-          <div id="month"></div>
-          <div id="year"></div>
-      </div>
+	  <!--put the rest before div for vertical spacer-->
+<div class = "card">
+		<div class = "contain">
+			<div class = "buttons">
+				<span class = "btn" id = "button0" onclick = "plotGraph('yeardata.php', 0)">year</span> 
+				<span class = "btn" id = "button1" onclick = "plotGraph('monthdata.php', 1)">month</span> 
+				<span class = "btn" id = "button2" onclick = "plotGraph('weekdata.php', 2)">day</span> 
+				<!--span class = "btn" id = "button3" onclick = "changeGraph('yeardata.php', 3)">day</span--> 
+			</div>
+			<div id = "svg">
+			<svg id = "graph"></svg>
+			</div>
+			<script src = "scripts/graph.js"></script>
+			<script>
+				/** Only function needs to be called to generate graph
+					First parameter is the php file to call to database and get data
+					Second parameter is the mode such as year month or week, 0 for year, 1 for month, 2 for week
+					Scales are still not working will be fixed
+					Functions for second line graph is still not done
+				*/
+				plotGraph("monthdata.php?secondGraph=temperature",1);
+			</script>
+			<div id = "notifs">
+				<h1>[Insert whatever title needed for this section]</h1>
+				<div>[Insert whatever needs to be displayed here]</div>
+			
+			</div>
+		</div>
+	</div>
     <div class="verticalspacer" data-offset-top="656" data-content-above-spacer="656" data-content-below-spacer="62"></div>
    </div>
   </div>

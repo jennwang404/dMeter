@@ -1,0 +1,56 @@
+/*remember to include this file in your html page*/
+.card{
+	float: right;
+	display: inline-block;
+	margin-right: 0px;
+	width: 62%;
+	margin-top:55px;
+	color: #2D3E50; 
+}
+.contain{
+	position: relative;
+	height: 570px; /*feel free the change the height to fit your data vis*/
+	right: 0px;
+	left: 0px;
+	background-color: white;
+	box-shadow: 0px 0px 5px white;
+	padding-top: 7px;
+	padding-bottom: 7px;
+}
+#svg{
+	width: 90%;
+	margin-left: 5%;
+}
+svg{
+}
+.buttons span{
+	padding-right: 30px;
+}
+.buttons{
+	padding: 10px;
+	margin-left: 5%;
+	color: #AEAEAE;
+	text-align: center;
+}
+.domain{
+	stroke: #2D3E50;
+}
+.ticks{
+	stroke: #2D3E50;
+}
+g text{
+	fill: #2D3E50;
+}
+#notifs{
+	margin-left: 30px;
+	margin-top: 14px;
+}
+#notifs h1{
+	font-size: 14pt;
+	color: #E64C66;
+}
+#notifs div{
+	padding: 5px;
+	margin-left: 5px;
+	font-size: 12pt;
+}

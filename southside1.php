@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html class="nojs html css_verticalspacer" lang="en-US">
  <head>
@@ -5,24 +6,25 @@
   <meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
   <meta name="generator" content="2017.0.1.363"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  
+
+  <script type="text/javascript" src="scripts/d3.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
   <script type="text/javascript">
    // Update the 'nojs'/'js' class on the html node
 document.documentElement.className = document.documentElement.className.replace(/\bnojs\b/g, 'js');
 
 // Check that all required assets are uploaded and up-to-date
-if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required":["museutils.js", "museconfig.js", "jquery.watch.js", "require.js", "jquery.musepolyfill.bgsize.js", "webpro.js", "musewpslideshow.js", "jquery.museoverlay.js", "touchswipe.js", "lansing.css"], "outOfDate":[]};
+if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required":["museutils.js", "museconfig.js", "jquery.watch.js", "require.js", "jquery.musepolyfill.bgsize.js", "webpro.js", "musewpslideshow.js", "jquery.museoverlay.js", "touchswipe.js", "southside.css"], "outOfDate":[]};
 </script>
   
-  <title>Lansing</title>
+  <title>Southside</title>
   <!-- CSS -->
   <link rel="stylesheet" type="text/css" href="css/site_global.css?crc=193633137"/>
   <link rel="stylesheet" type="text/css" href="css/master_a-master.css?crc=238735217"/>
-  <link rel="stylesheet" type="text/css" href="css/lansing.css?crc=3959280708" id="pagesheet"/>
-  <link rel="stylesheet" type="text/css" href="css/datavis.css" id="pagesheet"/>
+  <link rel="stylesheet" type="text/css" href="css/southside.css?crc=4077041817" id="pagesheet"/>
+  <link rel="stylesheet" type="text/css" href="css/datavis.css"/>
+  
   <!-- Other scripts -->
-	<script src="https://d3js.org/d3.v4.min.js"></script>
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
   <script type="text/javascript">
    var __adobewebfontsappname__ = "muse";
 </script>
@@ -32,89 +34,89 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
 </script>
    </head>
  <body>
-
   <div class="clearfix borderbox" id="page"><!-- column -->
    <div class="position_content" id="page_position_content">
     <div class="browser_width colelem" id="u108-bw">
      <div id="u108"><!-- group -->
       <div class="clearfix" id="u108_align_to_page">
        <div class="clearfix grpelem" id="u114-4"><!-- content -->
-        <p id="u114-2"><input id='logout-submit' type='submit' name='submit' value='LOG OUT'></p>
+        <p id="u114-2">LOG OUT</p>
        </div>
       </div>
      </div>
     </div>
     <div class="clearfix colelem" id="pu120-4"><!-- group -->
-     <a href="index.php"><img class="grpelem" id="u120-4" alt="d.Meter" src="images/u120-4.png?crc=416918895" data-image-width="97"/></a><!-- rasterized frame -->
+     <img class="grpelem" id="u120-4" alt="d.Meter" src="images/u120-4.png?crc=416918895" data-image-width="97"/><!-- rasterized frame -->
      <a class="nonblock nontext clearfix grpelem" id="u129-4" href="account.php"><!-- content --><p>my account</p></a>
      <a class="nonblock nontext clearfix grpelem" id="u132-4" href="techsupport.html"><!-- content --><p>technical support</p></a>
     </div>
-    <div class="PamphletWidget clearfix colelem" id="pamphletu810"><!-- none box -->
-     <div class="popup_anchor" id="u821popup">
-      <div class="ContainerGroup clearfix" id="u821"><!-- stack box -->
-       <div class="Container shadow clearfix grpelem" id="u822"><!-- column -->
-        <div class="museBGSize colelem" id="u824"><!-- simple frame --></div>
-        <div class="clearfix colelem" id="u823-4"><!-- content -->
-         <p>The unusual energy spike costs you $40. You may spend 23% more utility than usual in this month.</p>
+    <div class="PamphletWidget clearfix colelem" id="pamphletu883"><!-- none box -->
+     <div class="popup_anchor" id="u890popup">
+      <div class="ContainerGroup clearfix" id="u890"><!-- stack box -->
+       <div class="Container shadow clearfix grpelem" id="u891"><!-- column -->
+        <div class="museBGSize colelem" id="u893"><!-- simple frame --></div>
+        <div class="clearfix colelem" id="u892-4"><!-- content -->
+         <p>So far, you owe NYSEG $76.34 by using 1156 kWh.</p>
         </div>
        </div>
-       <div class="Container invi shadow clearfix grpelem" id="u828"><!-- column -->
-        <div class="museBGSize colelem" id="u830"><!-- simple frame --></div>
-        <div class="clearfix colelem" id="u829-4"><!-- content -->
-         <p>You help to beautify the environment by saving 325 kWh this month.</p>
+       <div class="Container invi shadow clearfix grpelem" id="u897"><!-- column -->
+        <div class="museBGSize colelem" id="u898"><!-- simple frame --></div>
+        <div class="clearfix colelem" id="u899-4"><!-- content -->
+         <p>You help to beautify the environment by saving 127 kWh this month.</p>
         </div>
        </div>
-       <div class="Container invi shadow clearfix grpelem" id="u825"><!-- column -->
-        <div class="museBGSize colelem" id="u827"><!-- simple frame --></div>
-        <div class="clearfix colelem" id="u826-4"><!-- content -->
-         <p>So far, you owe NYSEG $134.56 by using 1534 kWh.</p>
+       <div class="Container invi shadow clearfix grpelem" id="u894"><!-- column -->
+        <div class="museBGSize colelem" id="u895"><!-- simple frame --></div>
+        <div class="clearfix colelem" id="u896-4"><!-- content -->
+         <p>The unusual energy spike costs you $35. You may spend 18% more utility than usual in this month.</p>
         </div>
        </div>
       </div>
      </div>
-     <div class="ThumbGroup clearfix grpelem" id="u815"><!-- none box -->
-      <div class="popup_anchor" id="u816popup">
-       <div class="Thumb popup_element rounded-corners" id="u816"><!-- simple frame --></div>
+     <div class="ThumbGroup clearfix grpelem" id="u900"><!-- none box -->
+      <div class="popup_anchor" id="u903popup">
+       <div class="Thumb popup_element rounded-corners" id="u903"><!-- simple frame --></div>
       </div>
-      <div class="popup_anchor" id="u818popup">
-       <div class="Thumb popup_element rounded-corners" id="u818"><!-- simple frame --></div>
+      <div class="popup_anchor" id="u901popup">
+       <div class="Thumb popup_element rounded-corners" id="u901"><!-- simple frame --></div>
       </div>
-      <div class="popup_anchor" id="u817popup">
-       <div class="Thumb popup_element rounded-corners" id="u817"><!-- simple frame --></div>
+      <div class="popup_anchor" id="u902popup">
+       <div class="Thumb popup_element rounded-corners" id="u902"><!-- simple frame --></div>
       </div>
      </div>
     </div>
-	 <div class = "card">
+	  <!--put the rest before div for vertical spacer-->
+<div class = "card">
 		<div class = "contain">
 			<div class = "buttons">
-				<span class = "btn" id = "button0" onclick = "plotGraph('yeardata.php?area=2', 0)">year</span> 
-				<span class = "btn" id = "button1" onclick = "plotGraph('monthdata.php?area=2', 1)">month</span> 
-				<span class = "btn" id = "button2" onclick = "plotGraph('weekdata.php?area=2', 2)">week</span> 
+				<span class = "btn" id = "button0" onclick = "plotGraph('yeardata.php', 0)">year</span> 
+				<span class = "btn" id = "button1" onclick = "plotGraph('monthdata.php', 1)">month</span> 
+				<span class = "btn" id = "button2" onclick = "plotGraph('weekdata.php', 2)">day</span> 
 				<!--span class = "btn" id = "button3" onclick = "changeGraph('yeardata.php', 3)">day</span--> 
 			</div>
 			<div id = "svg">
-			<svg id = "graph" style = "border: 1px solid black"></svg>
+			<svg id = "graph"></svg>
 			</div>
 			<script src = "scripts/graph.js"></script>
 			<script>
-				
-				plotGraph("weekdata.php", 2);
-				
+				/** Only function needs to be called to generate graph
+					First parameter is the php file to call to database and get data
+					Second parameter is the mode such as year month or week, 0 for year, 1 for month, 2 for week
+					Scales are still not working will be fixed
+					Functions for second line graph is still not done
+				*/
+				plotGraph("monthdata.php?secondGraph=temperature",1);
 			</script>
 			<div id = "notifs">
-				<h1>Notifications</h1>
-				<div>[Insert notification 1 over here possibly alerts of usage]</div>
-				<div>[Insert notification 2 over here possibly updates of software]</div>
-				<div>[Insert notification 3 over here possily about error in system]</div>
-				<div>[Insert notification 4 over here about anything I guess]</div>
+				<h1>[Insert whatever title needed for this section]</h1>
+				<div>[Insert whatever needs to be displayed here]</div>
 			
 			</div>
 		</div>
 	</div>
-  </div>
     <div class="verticalspacer" data-offset-top="656" data-content-above-spacer="656" data-content-below-spacer="62"></div>
    </div>
-  
+  </div>
   <!-- Other scripts -->
   <script type="text/javascript">
    window.Muse.assets.check=function(d){if(!window.Muse.assets.checked){window.Muse.assets.checked=!0;var b={},c=function(a,b){if(window.getComputedStyle){var c=window.getComputedStyle(a,null);return c&&c.getPropertyValue(b)||c&&c[b]||""}if(document.documentElement.currentStyle)return(c=a.currentStyle)&&c[b]||a.style&&a.style[b]||"";return""},a=function(a){if(a.match(/^rgb/))return a=a.replace(/\s+/g,"").match(/([\d\,]+)/gi)[0].split(","),(parseInt(a[0])<<16)+(parseInt(a[1])<<8)+parseInt(a[2]);if(a.match(/^\#/))return parseInt(a.substr(1),
@@ -128,7 +130,7 @@ Muse.Utils.prepHyperlinks(true);/* body */
 Muse.Utils.resizeHeight('.browser_width');/* resize height */
 Muse.Utils.requestAnimationFrame(function() { $('body').addClass('initialized'); });/* mark body as initialized */
 Muse.Utils.fullPage('#page');/* 100% height page */
-Muse.Utils.initWidget('#pamphletu810', ['#bp_infinity'], function(elem) { return new WebPro.Widget.ContentSlideShow(elem, {contentLayout_runtime:'stack',event:'mouseover',deactivationEvent:'none',autoPlay:false,displayInterval:3000,transitionStyle:'fading',transitionDuration:0,hideAllContentsFirst:false,shuffle:false,enableSwipe:true,resumeAutoplay:true,resumeAutoplayInterval:3000,playOnce:false,autoActivate_runtime:false}); });/* #pamphletu810 */
+Muse.Utils.initWidget('#pamphletu883', ['#bp_infinity'], function(elem) { return new WebPro.Widget.ContentSlideShow(elem, {contentLayout_runtime:'stack',event:'mouseover',deactivationEvent:'none',autoPlay:false,displayInterval:3000,transitionStyle:'fading',transitionDuration:0,hideAllContentsFirst:false,shuffle:false,enableSwipe:true,resumeAutoplay:true,resumeAutoplayInterval:3000,playOnce:false,autoActivate_runtime:false}); });/* #pamphletu883 */
 Muse.Utils.showWidgetsWhenReady();/* body */
 Muse.Utils.transformMarkupToFixBrowserProblems();/* body */
 }catch(b){if(b&&"function"==typeof b.notify?b.notify():Muse.Assert.fail("Error calling selector function: "+b),false)throw b;}})})};
@@ -136,5 +138,6 @@ Muse.Utils.transformMarkupToFixBrowserProblems();/* body */
 </script>
   <!-- RequireJS script -->
   <script src="scripts/require.js?crc=4159430777" type="text/javascript" async data-main="scripts/museconfig.js?crc=4179431180" onload="if (requirejs) requirejs.onError = function(requireType, requireModule) { if (requireType && requireType.toString && requireType.toString().indexOf && 0 <= requireType.toString().indexOf('#scripterror')) window.Muse.assets.check(); }" onerror="window.Muse.assets.check();"></script>
+  <script type="text/javascript" src="scripts/southside.js"></script>
    </body>
 </html>
