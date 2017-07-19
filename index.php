@@ -140,7 +140,11 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
             $_SESSION['user'] = $login_email;
             $login_message_succ = "Login successful";
             $url = $_SERVER['REQUEST_URI'];
-            $newurl =  substr($url, 0, -9)."account.php";
+            if (substr($url, -9) == "index.php") {
+              $newurl =  substr($url, 0, -9)."account.php";
+            } else {
+              $newurl = $url."account.php";
+            }
             echo '<script type="text/javascript">window.location ='."'".$newurl."'".'</script>';
           } else {
             $login_message =  "Incorrect password";
@@ -159,7 +163,11 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
       <div class="clearfix" id="u987_align_to_page">
        <div class="clearfix grpelem" id="u992-4"><!-- content -->
         <form method="post" action="">
-          <p>Have an account? <input id='login-submit' type='submit' name='submit' value='Login'></p>
+          <?php 
+            if (!isset($_SESSION['user'])) {
+              echo "<p>Have an account? <input id='login-submit' type='submit' name='submit' value='Login'></p>";
+            }
+          ?>
           <?php echo '<div id="login-message">'.$login_message.'</div>' ?>
           <?php echo '<div id="login-message-succ">'.$login_message_succ.'</div>' ?>
           <div id="pop-up">
@@ -171,7 +179,7 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
       </div>
      </div>
     </div>
-    <img class="colelem" id="u986-4" alt="d.Meter" src="images/u986-4.png?crc=416918895" data-image-width="97"/><!-- rasterized frame -->
+    <a href="index.php"><img class="colelem" id="u986-4" alt="d.Meter" src="images/u986-4.png?crc=416918895" data-image-width="97" /></a><!-- rasterized frame -->
     <div class="clearfix colelem" id="u937-10"><!-- content -->
      <p id="u937-2">TRANSPARENT. CONVENIENT. FLEXIBLE.</p>
      <p id="u937-3">&nbsp;</p>
