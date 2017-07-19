@@ -1,84 +1,44 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-  </head>
-  <body>
-    <script>
+<html class="nojs html css_verticalspacer" lang="en-US">
+ <head>
 
-      d3.csv('data.csv', function (data) {
+  <meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
+  <meta name="generator" content="2017.0.1.363"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  
+  <script type="text/javascript">
+   // Update the 'nojs'/'js' class on the html node
+document.documentElement.className = document.documentElement.className.replace(/\bnojs\b/g, 'js');
 
-    // Variables
-      var body = d3.select('body')
-      var margin = { top: 50, right: 50, bottom: 50, left: 50 }
-      var h = 500 - margin.top - margin.bottom
-      var w = 500 - margin.left - margin.right
-      var formatPercent = d3.format('.2%')
+// Check that all required assets are uploaded and up-to-date
+if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required":["museutils.js", "museconfig.js", "jquery.watch.js", "require.js", "jquery.musepolyfill.bgsize.js", "webpro.js", "musewpslideshow.js", "jquery.museoverlay.js", "touchswipe.js", "northside.css"], "outOfDate":[]};
+</script>
+  
+  <title>Northside</title>
+  <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="css/site_global.css?crc=193633137"/>
+  <link rel="stylesheet" type="text/css" href="css/master_a-master.css?crc=238735217"/>
+  <link rel="stylesheet" type="text/css" href="css/northside.css?crc=4125203635" id="pagesheet"/>
+  <!-- Other scripts -->
+  <script type="text/javascript">
+   var __adobewebfontsappname__ = "muse";
+</script>
+  <!-- JS includes -->
+  <script type="text/javascript">
+   document.write('\x3Cscript src="' + (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//webfonts.creativecloud.com/muli:n4:default.js" type="text/javascript">\x3C/script>');
+</script>
+   </head>
+ <body>
 
-    // Scales
-      var colorScale = d3.scale.linear()
-                               .domain([0, 1])
-                               .range(['#1BBC9B', '#FFFFFF', '#E64C66'])
-
-      var xScale = d3.scale.linear().domain([0,1]).range([0,w])
-
-      var yScale = d3.scale.linear().domain([0,1]).range([h,0])
-
-    // SVG
-      var svg = d3.select('body').append('svg')
-        .attr('height', h + margin.top + margin.bottom)
-        .attr('width', w + margin.left + margin.right)
-        .append('g')
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-        svg.append('rect')
-           .attr('width', '100%')
-           .attr('height', '100%')
-           .attr('fill', '#AEAEAE');
-
-    // Circles
-    svg.append('circle')
-    .attr('cx', 225)
-    .attr('cy', 225)
-    .attr('r', '25')
-    .attr('fill', '#1BBC9B')
-	.on('mouseover', function () { d3.select(this)
-                                                      .transition()
-                                                      .duration(500)
-                                                      .attr('r', function (d) { return 4*Math.sqrt(25) }) })
-                     .on('mouseout', function () { d3.select(this)
-                                                     .transition()
-                                                     .duration(500)
-                                                     .attr('r', function (d) { return 3*Math.sqrt(25) })      })
-
-
-    .append('title') // Tooltip
-      .text(function (d) { return 'Energy Usage: ' + 25})
-
-    var circles = svg.selectAll('circle')
-                     .data(data)
-                     .enter()
-                     .append('circle')
-                     .attr('cx', function (d) { return w*(d.randomx) })
-                     .attr('cy', function (d) { return h*(d.randomy) })
-                     .attr('r', function (d) { return 3*Math.sqrt(d.usage) })
-                     .attr('fill', '#FFFFFF')
-                     .on('mouseover', function () { d3.select(this)
-                                                      .transition()
-                                                      .duration(500)
-                                                      .attr('r', function (d) { return 4*Math.sqrt(d.usage) }) })
-                     .on('mouseout', function () { d3.select(this)
-                                                     .transition()
-                                                     .duration(500)
-                                                     .attr('r', function (d) { return 3*Math.sqrt(d.usage) })
-      })
   <div class="clearfix borderbox" id="page"><!-- column -->
    <div class="position_content" id="page_position_content">
     <div class="browser_width colelem" id="u108-bw">
      <div id="u108"><!-- group -->
       <div class="clearfix" id="u108_align_to_page">
        <div class="rounded-corners clearfix grpelem" id="u114-4"><!-- content -->
-        <p id="u114-2"><input id='logout-submit' type='submit' name='submit' value='LOG OUT'></p>
+        <form method="post" action="">
+          <p id="u114-2"><input id='logout-submit' type='submit' name='submit' value='LOG OUT'></p>
+        </form>
        </div>
       </div>
      </div>
@@ -88,6 +48,18 @@
      <a class="nonblock nontext clearfix grpelem" id="u129-4" href="account.php"><!-- content --><p>my account</p></a>
      <a class="nonblock nontext clearfix grpelem" id="u132-4" href="techsupport.html"><!-- content --><p>technical support</p></a>
     </div>
+
+    <?php
+
+      if (isset($_POST['submit']) && $_POST['submit']=="LOG OUT") {
+        unset($_SESSION['user']);
+        $url = $_SERVER['REQUEST_URI'];
+        $newurl =  substr($url, 0, -13)."index.php";
+        echo '<script type="text/javascript">window.location ='."'".$newurl."'".'</script>';
+      }
+
+    ?>
+
     <div class="PamphletWidget clearfix colelem" id="pamphletu741"><!-- none box -->
      <div class="popup_anchor" id="u752popup">
       <div class="ContainerGroup clearfix" id="u752"><!-- stack box -->
@@ -143,12 +115,9 @@ Muse.Utils.initWidget('#pamphletu741', ['#bp_infinity'], function(elem) { return
 Muse.Utils.showWidgetsWhenReady();/* body */
 Muse.Utils.transformMarkupToFixBrowserProblems();/* body */
 }catch(b){if(b&&"function"==typeof b.notify?b.notify():Muse.Assert.fail("Error calling selector function: "+b),false)throw b;}})})};
->>>>>>> Southside
 
-    .append('title') // Tooltip
-      .text(function (d) { return 'Energy Usage: ' + d.usage})
-
-    })
 </script>
-  </body>
+  <!-- RequireJS script -->
+  <script src="scripts/require.js?crc=4159430777" type="text/javascript" async data-main="scripts/museconfig.js?crc=4179431180" onload="if (requirejs) requirejs.onError = function(requireType, requireModule) { if (requireType && requireType.toString && requireType.toString().indexOf && 0 <= requireType.toString().indexOf('#scripterror')) window.Muse.assets.check(); }" onerror="window.Muse.assets.check();"></script>
+   </body>
 </html>

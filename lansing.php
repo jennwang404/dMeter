@@ -19,10 +19,7 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
   <link rel="stylesheet" type="text/css" href="css/site_global.css?crc=193633137"/>
   <link rel="stylesheet" type="text/css" href="css/master_a-master.css?crc=238735217"/>
   <link rel="stylesheet" type="text/css" href="css/lansing.css?crc=3959280708" id="pagesheet"/>
-  <link rel="stylesheet" type="text/css" href="css/datavis.css" id="pagesheet"/>
   <!-- Other scripts -->
-	<script src="https://d3js.org/d3.v4.min.js"></script>
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
   <script type="text/javascript">
    var __adobewebfontsappname__ = "muse";
 </script>
@@ -39,7 +36,9 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
      <div id="u108"><!-- group -->
       <div class="clearfix" id="u108_align_to_page">
        <div class="clearfix grpelem" id="u114-4"><!-- content -->
-        <p id="u114-2"><input id='logout-submit' type='submit' name='submit' value='LOG OUT'></p>
+        <form method="post" action="">
+          <p id="u114-2"><input id='logout-submit' type='submit' name='submit' value='LOG OUT'></p>
+        </form>
        </div>
       </div>
      </div>
@@ -49,6 +48,16 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
      <a class="nonblock nontext clearfix grpelem" id="u129-4" href="account.php"><!-- content --><p>my account</p></a>
      <a class="nonblock nontext clearfix grpelem" id="u132-4" href="techsupport.html"><!-- content --><p>technical support</p></a>
     </div>
+    <?php
+
+      if (isset($_POST['submit']) && $_POST['submit']=="LOG OUT") {
+        unset($_SESSION['user']);
+        $url = $_SERVER['REQUEST_URI'];
+        $newurl =  substr($url, 0, -11)."index.php";
+        echo '<script type="text/javascript">window.location ='."'".$newurl."'".'</script>';
+      }
+
+    ?>
     <div class="PamphletWidget clearfix colelem" id="pamphletu810"><!-- none box -->
      <div class="popup_anchor" id="u821popup">
       <div class="ContainerGroup clearfix" id="u821"><!-- stack box -->
@@ -84,37 +93,9 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
       </div>
      </div>
     </div>
-	 <div class = "card">
-		<div class = "contain">
-			<div class = "buttons">
-				<span class = "btn" id = "button0" onclick = "plotGraph('yeardata.php?area=2', 0)">year</span> 
-				<span class = "btn" id = "button1" onclick = "plotGraph('monthdata.php?area=2', 1)">month</span> 
-				<span class = "btn" id = "button2" onclick = "plotGraph('weekdata.php?area=2', 2)">week</span> 
-				<!--span class = "btn" id = "button3" onclick = "changeGraph('yeardata.php', 3)">day</span--> 
-			</div>
-			<div id = "svg">
-			<svg id = "graph" style = "border: 1px solid black"></svg>
-			</div>
-			<script src = "scripts/graph.js"></script>
-			<script>
-				
-				plotGraph("weekdata.php", 2);
-				
-			</script>
-			<div id = "notifs">
-				<h1>Notifications</h1>
-				<div>[Insert notification 1 over here possibly alerts of usage]</div>
-				<div>[Insert notification 2 over here possibly updates of software]</div>
-				<div>[Insert notification 3 over here possily about error in system]</div>
-				<div>[Insert notification 4 over here about anything I guess]</div>
-			
-			</div>
-		</div>
-	</div>
-  </div>
     <div class="verticalspacer" data-offset-top="656" data-content-above-spacer="656" data-content-below-spacer="62"></div>
    </div>
-  
+  </div>
   <!-- Other scripts -->
   <script type="text/javascript">
    window.Muse.assets.check=function(d){if(!window.Muse.assets.checked){window.Muse.assets.checked=!0;var b={},c=function(a,b){if(window.getComputedStyle){var c=window.getComputedStyle(a,null);return c&&c.getPropertyValue(b)||c&&c[b]||""}if(document.documentElement.currentStyle)return(c=a.currentStyle)&&c[b]||a.style&&a.style[b]||"";return""},a=function(a){if(a.match(/^rgb/))return a=a.replace(/\s+/g,"").match(/([\d\,]+)/gi)[0].split(","),(parseInt(a[0])<<16)+(parseInt(a[1])<<8)+parseInt(a[2]);if(a.match(/^\#/))return parseInt(a.substr(1),

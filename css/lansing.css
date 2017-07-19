@@ -51,3 +51,9 @@ g text{
 	padding: 5px;
 	font-size: 12pt;
 }
+#logout-submit {
+	display: inline;
+	position: relative;
+	background-color: transparent;
+	color: #FFFFFF;
+}
