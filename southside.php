@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
   <script type="text/javascript" src="scripts/d3.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
   <script type="text/javascript">
    // Update the 'nojs'/'js' class on the html node
 document.documentElement.className = document.documentElement.className.replace(/\bnojs\b/g, 'js');
@@ -71,8 +71,6 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
      </div>
     </div>
     <div class="clearfix colelem" id="pu120-4"><!-- group -->
-     <img class="grpelem" id="u120-4" alt="d.Meter" src="images/u120-4.png?crc=416918895" data-image-width="97"/><!-- rasterized frame -->
-     <a class="nonblock nontext clearfix grpelem" id="u129-4" href="account.php"><!-- content --><p>my account</p></a>
      <a href="index.php"><img class="grpelem" id="u120-4" alt="d.Meter" src="images/u120-4.png?crc=416918895" data-image-width="97"/></a><!-- rasterized frame -->
      <a class="nonblock nontext clearfix grpelem" id="u129-4" href="account.php"><!-- content --><p>my account</p></a>
      <a class="nonblock nontext clearfix grpelem" id="u132-4" href="techsupport.html"><!-- content --><p>technical support</p></a>
@@ -165,6 +163,5 @@ Muse.Utils.transformMarkupToFixBrowserProblems();/* body */
 </script>
   <!-- RequireJS script -->
   <script src="scripts/require.js?crc=4159430777" type="text/javascript" async data-main="scripts/museconfig.js?crc=4179431180" onload="if (requirejs) requirejs.onError = function(requireType, requireModule) { if (requireType && requireType.toString && requireType.toString().indexOf && 0 <= requireType.toString().indexOf('#scripterror')) window.Muse.assets.check(); }" onerror="window.Muse.assets.check();"></script>
-  <script type="text/javascript" src="scripts/southside.js"></script>
    </body>
 </html>

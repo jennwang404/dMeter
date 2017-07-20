@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html class="nojs html css_verticalspacer" lang="en-US">
  <head>
@@ -6,6 +7,8 @@
   <meta name="generator" content="2017.0.1.363"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   
+  <script type="text/javascript" src="scripts/d3.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
   <script type="text/javascript">
    // Update the 'nojs'/'js' class on the html node
 document.documentElement.className = document.documentElement.className.replace(/\bnojs\b/g, 'js');
@@ -19,6 +22,8 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
   <link rel="stylesheet" type="text/css" href="css/site_global.css?crc=193633137"/>
   <link rel="stylesheet" type="text/css" href="css/master_a-master.css?crc=238735217"/>
   <link rel="stylesheet" type="text/css" href="css/lansing.css?crc=3959280708" id="pagesheet"/>
+  <link rel="stylesheet" type="text/css" href="css/datavis.css"/>
+
   <!-- Other scripts -->
   <script type="text/javascript">
    var __adobewebfontsappname__ = "muse";
@@ -29,7 +34,29 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
 </script>
    </head>
  <body>
+  <?php
 
+        //Get the connection info for the database
+      require_once 'includes/config.php';
+
+      //Establish a database connection
+      $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+      //Was there an error connecting to the database?
+      if ($mysqli->errno) {
+        //The page isn't worth much without a db connection so display the error and quit
+        print($mysqli->error);
+        exit();
+      }
+
+      if (isset($_POST['submit']) && $_POST['submit']=="LOG OUT") {
+        unset($_SESSION['user']);
+        $url = $_SERVER['REQUEST_URI'];
+        $newurl =  substr($url, 0, -11)."index.php";
+        echo '<script type="text/javascript">window.location ='."'".$newurl."'".'</script>';
+      }
+
+    ?>
   <div class="clearfix borderbox" id="page"><!-- column -->
    <div class="position_content" id="page_position_content">
     <div class="browser_width colelem" id="u108-bw">
@@ -48,16 +75,6 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
      <a class="nonblock nontext clearfix grpelem" id="u129-4" href="account.php"><!-- content --><p>my account</p></a>
      <a class="nonblock nontext clearfix grpelem" id="u132-4" href="techsupport.html"><!-- content --><p>technical support</p></a>
     </div>
-    <?php
-
-      if (isset($_POST['submit']) && $_POST['submit']=="LOG OUT") {
-        unset($_SESSION['user']);
-        $url = $_SERVER['REQUEST_URI'];
-        $newurl =  substr($url, 0, -11)."index.php";
-        echo '<script type="text/javascript">window.location ='."'".$newurl."'".'</script>';
-      }
-
-    ?>
     <div class="PamphletWidget clearfix colelem" id="pamphletu810"><!-- none box -->
      <div class="popup_anchor" id="u821popup">
       <div class="ContainerGroup clearfix" id="u821"><!-- stack box -->
@@ -92,6 +109,35 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
        <div class="Thumb popup_element rounded-corners" id="u817"><!-- simple frame --></div>
       </div>
      </div>
+    </div>
+      <!--put the rest before div for vertical spacer-->
+    <div class = "card">
+      <div class = "contain">
+        <div class = "buttons">
+          <span class = "btn" id = "button0" onclick = "plotGraph('yeardata.php', 0)">year</span> 
+          <span class = "btn" id = "button1" onclick = "plotGraph('monthdata.php', 1)">month</span> 
+          <span class = "btn" id = "button2" onclick = "plotGraph('weekdata.php', 2)">week</span> 
+          <!--span class = "btn" id = "button3" onclick = "changeGraph('yeardata.php', 3)">day</span--> 
+        </div>
+        <div id = "svg">
+        <svg id = "graph"></svg>
+        </div>
+        <script src = "scripts/graph.js"></script>
+        <script>
+          /** Only function needs to be called to generate graph
+            First parameter is the php file to call to database and get data
+            Second parameter is the mode such as year month or week, 0 for year, 1 for month, 2 for week
+            Scales are still not working will be fixed
+            Functions for second line graph is still not done
+          */
+          plotGraph("monthdata.php",1);
+        </script>
+        <div id = "notifs">
+          <h1>[Insert whatever title needed for this section]</h1>
+          <div>[Insert whatever needs to be displayed here]</div>
+        
+        </div>
+      </div>
     </div>
     <div class="verticalspacer" data-offset-top="656" data-content-above-spacer="656" data-content-below-spacer="62"></div>
    </div>
