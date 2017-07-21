@@ -4,10 +4,9 @@
 #user-info {
 	padding-top: 200px;
 	font-family: muli, sans-serif;
-	font-weight: 600;
-	font-size: 24px;
+	font-weight: 400;
 	color: #FFFFFF;
-	margin-left: 6%;
+	margin-left: 23%;
 }
 
 #logout-submit {
@@ -42,7 +41,7 @@
     font-weight: 400;
     margin-top: 15px;
     position: relative;
-    width: 17.4%;
+    width: 20%;
     margin-left: 43.03%;
 }
 
