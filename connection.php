@@ -1,6 +1,6 @@
 <?php
-    $username = ""; 
-    $password = "";   
+    $username = "root"; 
+    $password = "root";   
     $host = "localhost";
     $database="dMeter";
     

@@ -20,9 +20,8 @@
           plotGraph("monthdata.php?secondGraph=Temperature",1, "south");
         </script>
         <div id = "notifs">
-          <h1>[Insert whatever title needed for this section]</h1>
-          <div>[Insert whatever needs to be displayed here]</div>
-        
+          <h1>Money saved this <span id="period"></span></h1>
+          <div>$</div>
         </div>
       </div>
     </div>

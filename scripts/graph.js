@@ -201,6 +201,17 @@ function graphTemp(data, xScale, yScale){
 };
 
 function plotGraph(path, time, region){
+	var period;
+	if (time == 0) {
+		period = "year";
+	}
+	if (time == 1) {
+		period = "month";
+	}
+	if (time == 2) {
+		period = "day";
+	}
+	$("#period").html(period);
 	changeGraph(path, time, region);
 	if (region != "north")
 		changeGraphTemp(path,time, region);
