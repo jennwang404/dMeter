@@ -18,7 +18,7 @@ var parseLineTemp;
 
 calculateDimensions();
 
-var svg = d3.select("#graph");
+var svg = d3.select(".graph");
 svg.attr("height", height)
 	.attr("width", width);
 	
@@ -27,14 +27,14 @@ var plot = svg.append("g");
 function parseYear(data){
 	data.forEach(function(d){
 			d.Time = new Date(Number(d.Year),0);
-			d.Usage = Number(d.EnergyUse);
+			d.Energy = Number(d.Energy);
 		});
 }
 
 function parseMonth(data){
 	data.forEach(function(d){
 			d.Time = new Date(Number(d.Year), Number(d.Month)-1);
-			d.Usage = Number(d.EnergyUse);
+			d.Energy = Number(d.Energy);
 		});
 }
 
@@ -42,7 +42,7 @@ function parseDay(data){
 	data.forEach(function(d){
 			d.Time = new Date(Number(d.Year), Number(d.Month)-1, Number(d.Day));
 			console.log(d.Time);
-			d.Usage = Number(d.EnergyUse);
+			d.Energy = Number(d.Energy);
 		});
 }
 
@@ -50,7 +50,7 @@ function parseDayTemp(data){
 	data.forEach(function(d){
 			d.Time = new Date(Number(d.Year), Number(d.Month)-1, Number(d.Day));
 			console.log(d.Time);
-			d.Temp = Number(d.Temp)
+			d.Temperature = Number(d.Temperature)
 	});
 }
 
@@ -58,7 +58,7 @@ function parseMonthTemp(data){
 	data.forEach(function(d){
 			d.Time = new Date(Number(d.Year), Number(d.Month)-1);
 			console.log(d.Time);
-			d.Temp = Number(d.Temp)
+			d.Temperature = Number(d.Temperature)
 	});
 }
 
@@ -66,11 +66,11 @@ function parseYearTemp(data){
 	data.forEach(function(d){
 			d.Time = new Date(Number(d.Year),0);
 			console.log(d.Time);
-			d.Temp = Number(d.Temp)
+			d.Temperature = Number(d.Temperature)
 	});
 }
 
-function changeGraph(path, time){
+function changeGraph(path, time, region){
 	
 	d3.select("#button"+prev).style("color", "#AEAEAE");
 	d3.select("#button"+time).style("color", "#1BBC9B");
@@ -81,7 +81,7 @@ function changeGraph(path, time){
 	
 	calculateDimensions();
 	
-	svg = d3.select("#svg").append("svg");
+	svg = d3.select("#"+region+"svg").append("svg");
 	svg.attr("height", height)
 	.attr("width", width);
 	
@@ -99,7 +99,7 @@ function changeGraph(path, time){
 		
 		xExtent = d3.extent(data, function(d){return d.Time});
 		console.log(xExtent[1].getFullYear());
-		yExtent = d3.extent(data, function(d){return d.Usage});
+		yExtent = d3.extent(data, function(d){return d.Energy});
 		yExtent[0] = 0;
 		xScale = d3.scaleLinear().domain(xExtent).range([paddingW, width - paddingH]);
 		yScale = d3.scaleLinear().domain(yExtent).range([height - paddingH, paddingH]);
@@ -117,7 +117,7 @@ function changeGraph(path, time){
 function graph(data, xScale, yScale){
 	var pathGenerator = d3.line()
 		.x(function(d){console.log((d.Time));return xScale(d.Time)})
-		.y(function(d){return yScale(d.Usage)});
+		.y(function(d){return yScale(d.Energy)});
 	
 	plot.append("path")
 	.datum(data)
@@ -127,8 +127,8 @@ function graph(data, xScale, yScale){
 	.style("fill", "none");
 	
 	var tmp = data;
-	tmp.push({Time: xExtent[1], Usage: yExtent[0]});
-	tmp.unshift({Time: xExtent[0], Usage: yExtent[0]});
+	tmp.push({Time: xExtent[1], Energy: yExtent[0]});
+	tmp.unshift({Time: xExtent[0], Energy: yExtent[0]});
 	console.log(tmp);
 	plot.append("path")
 	.datum(tmp)
@@ -142,14 +142,14 @@ function graph(data, xScale, yScale){
 	
 };
 
-function changeGraphTemp(path, time){
+function changeGraphTemp(path, time, region){
 	
 	svg.remove();
 	console.log(path);
 	
 	calculateDimensions();
 	
-	svg = d3.select("#svg").append("svg");
+	svg = d3.select("#"+region+"svg").append("svg");
 	svg.attr("height", height)
 	.attr("width", width);
 	
@@ -166,9 +166,10 @@ function changeGraphTemp(path, time){
 		parseLineTemp(temp);
 		
 		xExtent = d3.extent(temp, function(d){return d.Time});
-		console.log(xExtent[1].getFullYear());
-		yExtent = d3.extent(temp, function(d){return d.Temp});
+		//console.log(xExtent[1].getFullYear());
+		yExtent = d3.extent(temp, function(d){return d.Temperature});
 		yExtent[0] = 0;
+		yExtent[1] = yExtent[1] + 15;
 		xScale = d3.scaleLinear().domain(xExtent).range([paddingW, width - paddingH]);
 		yScale = d3.scaleLinear().domain(yExtent).range([height - paddingH, paddingH]);
 		var xAxis = d3.axisBottom(xScale);
@@ -185,12 +186,12 @@ function changeGraphTemp(path, time){
 function graphTemp(data, xScale, yScale){
 	var pathGeneratorTemp = d3.line()
 		.x(function(d){console.log((d.Time));return xScale(d.Time)})
-		.y(function(d){return yScale(d.Temp)});
+		.y(function(d){return yScale(d.Temperature)});
 	
 	plot.append("path")
 	.datum(data)
 	.attr("class", "lineGraph")
-	.attr("d", function(d){return pathGeneratorTemp(d)})
+	.attr("d", function(d){console.log(d);return pathGeneratorTemp(d)})
 	.style("stroke", "#1BBC9B")
 	.style("stroke-width", 3)
 	.style("fill", "none");
@@ -199,7 +200,8 @@ function graphTemp(data, xScale, yScale){
 	
 };
 
-function plotGraph(path, time){
-	changeGraph(path, time);
-	changeGraphTemp(path,time);
+function plotGraph(path, time, region){
+	changeGraph(path, time, region);
+	if (region != "north")
+		changeGraphTemp(path,time, region);
 }

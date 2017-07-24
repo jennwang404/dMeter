@@ -1,21 +1,39 @@
 /*remember to include this file in your html page*/
-.card{
+table{
 	float: right;
 	display: inline-block;
 	margin-right: 0px;
 	width: 62%;
 	margin-top:55px;
 	color: #2D3E50; 
+	font-family:muli, sans-serif
+}
+td{
+}
+.selected{
+	width:84%;
+	margin: 0px;
+	height: 570px;
+	padding: 0px;
+}
+.card{
+	margin: 0px;
+	padding: 0px;
+	height: 100%;
+}
+.tmp{
+	width: 50px;
+	margin: 0px;
+	height: 570px;
+	background: white;
 }
 .contain{
 	position: relative;
-	height: 570px; /*feel free the change the height to fit your data vis*/
+	height: 100%; /*feel free the change the height to fit your data vis*/
 	right: 0px;
 	left: 0px;
 	background-color: white;
 	box-shadow: 0px 0px 5px white;
-	padding-top: 7px;
-	padding-bottom: 7px;
 }
 #svg{
 	width: 90%;
@@ -53,4 +71,13 @@ g text{
 	padding: 5px;
 	margin-left: 5px;
 	font-size: 12pt;
+}
+#sublansing{
+	background-color: #8DDECD;
+}
+#subsouth{
+	background-color: #8DDECD;
+}
+#subnorth{
+	background-color: #C6EEE6;
 }

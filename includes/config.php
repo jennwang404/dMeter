@@ -2,7 +2,7 @@
 // ** MySQL connection settings ** //
 
 // Localhost
-define('DB_HOST', 'localhost:3308/phpmyadmin');
+define('DB_HOST', 'localhost');
 
 // Username
 define('DB_USER', 'root');    

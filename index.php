@@ -60,9 +60,9 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
         $password = filter_input( INPUT_POST, 'password', FILTER_SANITIZE_STRING );
         $firstname = filter_input( INPUT_POST, 'firstname', FILTER_SANITIZE_STRING );
         $lastname = filter_input( INPUT_POST, 'lastname', FILTER_SANITIZE_STRING );
-        $nyseg = filter_input( INPUT_POST, 'nyseg', FILTER_SANITIZE_STRING );
+        $nyseg = str_replace("-","", filter_input( INPUT_POST, 'nyseg', FILTER_SANITIZE_STRING ));
         $address = filter_input( INPUT_POST, 'address', FILTER_SANITIZE_STRING );
-        $phone = filter_input( INPUT_POST, 'phone', FILTER_SANITIZE_STRING );
+        $phone = str_replace(")","",str_replace("(","",str_replace("-","", filter_input( INPUT_POST, 'phone', FILTER_SANITIZE_STRING ))));
 
         $user_query = "SELECT * FROM Users WHERE email = '$email'";
 
