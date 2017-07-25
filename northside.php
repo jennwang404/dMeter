@@ -6,9 +6,10 @@
   <meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
   <meta name="generator" content="2017.0.1.363"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  
+
   <script type="text/javascript" src="scripts/d3.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   <script type="text/javascript">
    // Update the 'nojs'/'js' class on the html node
 document.documentElement.className = document.documentElement.className.replace(/\bnojs\b/g, 'js');
@@ -16,7 +17,7 @@ document.documentElement.className = document.documentElement.className.replace(
 // Check that all required assets are uploaded and up-to-date
 if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required":["museutils.js", "museconfig.js", "jquery.watch.js", "require.js", "jquery.musepolyfill.bgsize.js", "webpro.js", "musewpslideshow.js", "jquery.museoverlay.js", "touchswipe.js", "northside.css"], "outOfDate":[]};
 </script>
-  
+
   <title>Northside</title>
   <!-- CSS -->
   <link rel="stylesheet" type="text/css" href="css/site_global.css?crc=193633137"/>
@@ -112,12 +113,12 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
     </div>
         <!--put the rest before div for vertical spacer-->
     <div class = "card">
-        <div class = "contain">
+        <div class = "contain" style = "height: 100%; margin-left: 0px;">
           <div class = "buttons">
-            <span class = "btn" id = "button0" onclick = "plotGraph('yeardata.php', 0)">year</span> 
-            <span class = "btn" id = "button1" onclick = "plotGraph('monthdata.php', 1)">month</span> 
-            <span class = "btn" id = "button2" onclick = "plotGraph('weekdata.php', 2)">week</span> 
-            <!--span class = "btn" id = "button3" onclick = "changeGraph('yeardata.php', 3)">day</span--> 
+            <span class = "btn" id = "button0" onclick = "plotGraph('yeardata.php', 0)">year</span>
+            <span class = "btn" id = "button1" onclick = "plotGraph('monthdata.php', 1)">month</span>
+            <span class = "btn" id = "button2" onclick = "plotGraph('weekdata.php', 2)">week</span>
+            <!--span class = "btn" id = "button3" onclick = "changeGraph('yeardata.php', 3)">day</span-->
           </div>
           <div id = "svg">
           <svg id = "graph"></svg>
@@ -132,11 +133,10 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
             */
             plotGraph("monthdata.php",1);
           </script>
-          <div id = "notifs">
-            <h1>[Insert whatever title needed for this section]</h1>
-            <div>[Insert whatever needs to be displayed here]</div>
-          
+          <div id = "notifs" style = "margin-left: 0px;">
+            <div id = "circles" style = "margin-left: 0px; padding-left: 0px;"></div>
           </div>
+
         </div>
       </div>
     <div class="verticalspacer" data-offset-top="656" data-content-above-spacer="655" data-content-below-spacer="62"></div>
@@ -163,7 +163,7 @@ Muse.Utils.transformMarkupToFixBrowserProblems();/* body */
 </script>
   <!-- RequireJS script -->
   <script src="scripts/require.js?crc=4159430777" type="text/javascript" async data-main="scripts/museconfig.js?crc=4179431180" onload="if (requirejs) requirejs.onError = function(requireType, requireModule) { if (requireType && requireType.toString && requireType.toString().indexOf && 0 <= requireType.toString().indexOf('#scripterror')) window.Muse.assets.check(); }" onerror="window.Muse.assets.check();"></script>
-  <script type="text/javascript" src="scripts/northside.js"></script>
+  <script type="text/javascript" src="scripts/circles.js"></script>
 
    </body>
 </html>
