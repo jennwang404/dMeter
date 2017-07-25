@@ -204,12 +204,21 @@ function plotGraph(path, time, region){
 	var period;
 	if (time == 0) {
 		period = "year";
+		$("#year_saved").show();
+		$("#month_saved").hide()
+		$("#day_saved").hide()
 	}
 	if (time == 1) {
 		period = "month";
+		$("#year_saved").hide();
+		$("#month_saved").show()
+		$("#day_saved").hide()
 	}
 	if (time == 2) {
 		period = "day";
+		$("#year_saved").hide();
+		$("#month_saved").hide()
+		$("#day_saved").show()
 	}
 	$("#period").html(period);
 	changeGraph(path, time, region);

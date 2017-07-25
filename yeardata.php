@@ -1,6 +1,6 @@
 <?php
-    $username = "dmeterco"; 
-    $password = "301CollegeAve#";   
+    $username = "root"; 
+    $password = "root";   
     $host = "localhost";
     $database="dMeter";
 	$month = 7;
