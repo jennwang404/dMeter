@@ -2,25 +2,20 @@
      d3.csv('data.csv', function (data) {
 
    // Variables
-     var h = 500
-     var w = 500
+   w =400
+   h =149
 
    // Scales
-     var colorScale = d3.scale.linear()
+     var colorScale = d3.scaleLinear()
                               .domain([-1, 0, 1])
                               .range(['#2D3E50', '#FFFFFF', '#E64C66'])
 
    // SVG
-     var svg = d3.select('card').append('svg')
-       .attr('height',h)
+     var svg = d3.select('#circles').append('svg')
+       .attr('height', h)
        .attr('width', w)
        .append('g')
-       .attr("transform", "translate");
 
-       svg.append('rect')
-          .attr('width', '100%')
-          .attr('height', '100%')
-          .attr('fill', '#FFFFFF');
 
    // Circles
 
@@ -46,7 +41,7 @@
 
      })
          .append('title') // Tooltip
-           .text(function (d) { return 'Energy Usage: ' + d.usage + 'KWg'})
+           .text(function (d) { return 'Energy Usage: ' + d.usage + 'KWh'})
 
 
      svg.append('circle')

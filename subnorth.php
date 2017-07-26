@@ -1,10 +1,13 @@
+<head>
+  <script type="text/javascript" src="scripts/d3.min.js"></script>
+</head>
 <div class = "card" id = "north">
       <div class = "contain">
         <div class = "buttons">
-          <span class = "btn" id = "button0" onclick = "plotGraph('yeardata.php', 0, 'north')">year</span> 
-          <span class = "btn" id = "button1" onclick = "plotGraph('monthdata.php', 1, 'north')">month</span> 
-          <span class = "btn" id = "button2" onclick = "plotGraph('weekdata.php', 2, 'north')">day</span> 
-          <!--span class = "btn" id = "button3" onclick = "changeGraph('yeardata.php', 3)">day</span--> 
+          <span class = "btn" id = "button0" onclick = "plotGraph('yeardata.php', 0, 'north')">year</span>
+          <span class = "btn" id = "button1" onclick = "plotGraph('monthdata.php', 1, 'north')">month</span>
+          <span class = "btn" id = "button2" onclick = "plotGraph('weekdata.php', 2, 'north')">day</span>
+          <!--span class = "btn" id = "button3" onclick = "changeGraph('yeardata.php', 3)">day</span-->
         </div>
         <div class = "svg" id = "northsvg">
         <svg class = "graph" id = "northgraph"></svg>
@@ -20,9 +23,9 @@
           plotGraph("monthdata.php",1, "north");
         </script>
         <div id = "notifs">
-          <h1>[Insert whatever title needed for this section]</h1>
-          <div>[Insert whatever needs to be displayed here]</div>
-        
+          <h1 style= "text-align:center;">Your Community</h1>
+          <div id = "circles"></div>
         </div>
       </div>
     </div>
+  <script type="text/javascript" src="scripts/circles.js"></script>
