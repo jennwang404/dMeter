@@ -17,7 +17,7 @@ document.documentElement.className = document.documentElement.className.replace(
 if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required":["museutils.js", "museconfig.js", "jquery.watch.js", "require.js", "jquery.musepolyfill.bgsize.js", "webpro.js", "musewpslideshow.js", "jquery.museoverlay.js", "touchswipe.js", "lansing.css"], "outOfDate":[]};
 </script>
   
-  <title>Lansing</title>
+  <title>Dashboard</title>
   <!-- CSS -->
   <link rel="stylesheet" type="text/css" href="css/site_global.css?crc=193633137"/>
   <link rel="stylesheet" type="text/css" href="css/master_a-master.css?crc=238735217"/>
@@ -61,6 +61,7 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
 
       $user_result = $mysqli->query($user_query);
       
+      $user_region = "sublansing"; //By default
       if ( $user_result && $user_result->num_rows == 1) {
 
           $row = $user_result->fetch_assoc();
