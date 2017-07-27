@@ -130,7 +130,7 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
 					Scales are still not working will be fixed
 					Functions for second line graph is still not done
 				*/
-				plotGraph("monthdata.php?secondGraph=temperature",1);
+				plotGraph("monthdata.php?secondGraph=Temperature",1);
 			</script>
 			<div id = "notifs">
 				<h1>[Insert whatever title needed for this section]</h1>

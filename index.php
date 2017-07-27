@@ -232,33 +232,18 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
     </div>
     <form method="post" action="">
       <div id="form">
-        <div class="right-align">
-          Email: <br><br>
-          Password: <br><br>
-          First Name: <br><br>
-          Last Name: <br><br>
-          NYSEG Account Number: <br><br>
-          Home Address: <br><br>
-          Phone Number (optional): <br><br>
-        </div>
-        <div class="left-align">
-          <input class="width1" type="text" name="email"><br><br>
-          <input class="width1" type="text" name="password"><br><br>
-          <input class="width1" type="text" name="firstname"><br><br>
-          <input class="width1" type="text" name="lastname"><br><br>
-          <input class="width1" type="text" name="nyseg"><br><br>
-          <input class="width2" type="text" name="address"><br><br>
-          <input class="width1" type="text" name="phone"><br><br>
-        </div>
+          Email: <input class="width1" type="text" name="email"><br><br>
+          Password:  <input class="width2" type="text" name="password"><br><br>
+          First Name:  <input class="width1" type="text" name="firstname"><br><br>
+          Last Name:  <input class="width2" type="text" name="lastname"><br><br>
+          NYSEG Account Number:  <input class="width1" type="text" name="nyseg"><br><br>
+          Home Address:  <input class="width3" type="text" name="address"><br><br>
+          Phone Number (optional):  <input class="width1" type="text" name="phone"><br><br>
       </div>
        <?php echo '<div id="message">'.$message.'</div>' ?>
-       <?php 
-            if (!isset($_SESSION['user'])) {
-              echo('<div class="rounded-corners clearfix colelem" id="u1003-4"><!-- content -->
-              <p id="u1003-2">GET STARTED</p>
-              </div>');
-            }
-        ?>
+      <div class="rounded-corners clearfix colelem" id="u1003-4"><!-- content -->
+       <p id="u1003-2">GET STARTED</p>
+      </div>
     </form>
     <div class="browser_width colelem" id="u1009-bw">
      <div id="u1009"><!-- group -->
