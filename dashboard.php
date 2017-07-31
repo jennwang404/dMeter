@@ -17,7 +17,7 @@ document.documentElement.className = document.documentElement.className.replace(
 if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required":["museutils.js", "museconfig.js", "jquery.watch.js", "require.js", "jquery.musepolyfill.bgsize.js", "webpro.js", "musewpslideshow.js", "jquery.museoverlay.js", "touchswipe.js", "lansing.css"], "outOfDate":[]};
 </script>
   
-  <title>Lansing</title>
+  <title>Dashboard</title>
   <!-- CSS -->
   <link rel="stylesheet" type="text/css" href="css/site_global.css?crc=193633137"/>
   <link rel="stylesheet" type="text/css" href="css/master_a-master.css?crc=238735217"/>
@@ -36,7 +36,7 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
  <body>
   <?php
 
-        //Get the connection info for the database
+      //Get the connection info for the database
       require_once 'includes/config.php';
 
       //Establish a database connection
@@ -55,6 +55,62 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
         $newurl =  substr($url, 0, -11)."index.php";
         echo '<script type="text/javascript">window.location ='."'".$newurl."'".'</script>';
       }
+
+        $newurl =  substr($url, 0, -13)."index.php";
+        echo '<script type="text/javascript">window.location ='."'".$newurl."'".'</script>';
+      }
+
+      $login_email = $_SESSION['user'];
+      $user_query = "SELECT * FROM Users WHERE email = '$login_email'";
+
+      $user_result = $mysqli->query($user_query);
+      
+      $user_region = "sublansing"; //By default
+      if ( $user_result && $user_result->num_rows == 1) {
+
+          $row = $user_result->fetch_assoc();
+          $db_address = strtoupper($row["address"]);
+
+          //Load a specific card depending on what region they're from
+
+          $lansing_query = "SELECT * FROM Location WHERE region = 'Lansing'";
+          $lansing_result = $mysqli->query($lansing_query);
+          $lansing_addresses = array();
+          while ($lansing_row = $lansing_result->fetch_assoc()) {
+              array_push($lansing_addresses, $lansing_row["Street_Name"]);
+          }
+
+          $northside_query = "SELECT * FROM Location WHERE region = 'North'";
+          $northside_result = $mysqli->query($northside_query);
+          $northside_addresses = array();
+          while ($northside_row = $northside_result->fetch_assoc()) {
+              array_push($northside_addresses, $northside_row["Street_Name"]);
+          }
+
+          $southside_query = "SELECT * FROM Location WHERE region = 'South'";
+          $southside_result = $mysqli->query($southside_query);
+          $southside_addresses = array();
+          while ($southside_row = $southside_result->fetch_assoc()) {
+              array_push($southside_addresses, $southside_row["Street_Name"]);
+          }
+
+          $user_region = null;
+          foreach ($lansing_addresses as $address) {
+            if (strpos($db_address, $address) !== false) {
+              $user_region = 'sublansing';
+            }
+          }
+          foreach ($northside_addresses as $address) {
+            if (strpos($db_address, $address) !== false) {
+              $user_region = 'subnorth';
+            }
+          }
+          foreach ($southside_addresses as $address) {
+            if (strpos($db_address, $address) !== false) {
+              $user_region = 'subsouth';
+            }
+          }
+        }
 
     ?>
   <div class="clearfix borderbox" id="page"><!-- column -->
@@ -161,6 +217,85 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
 			
 				});	
 			}
+    </div><!--
+	<div id = "sublansing"></div>
+	<div id = "subnorth"><div class = "tmp"><div>Community</div></div></div>
+	<div id = "subsouth"><div class = "tmp"><div>Economic</div></div></div>
+	<div id = "next" onclick = "nextCard()" style = "position: absolute; top: 500; right: 50; z-index:100;">next</div-->
+	<table>
+		<tr>
+      <?php
+
+      if ($user_region == 'sublansing') {
+  			echo("<td id = 'sublansing' class = 'selected' onclick = loadCard('sublansing')></td>
+  			<td id = 'subnorth' class = 'tmp' onclick = loadCard('subnorth')></td>
+  			<td id = 'subsouth' class = 'tmp' onclick = loadCard('subsouth')></td>");
+      } else if ($user_region == 'subnorth') {
+        echo("<td id = 'sublansing' class = 'tmp' onclick = loadCard('sublansing')></td>
+        <td id = 'subnorth' class = 'selected' onclick = loadCard('subnorth')></td>
+        <td id = 'subsouth' class = 'tmp' onclick = loadCard('subsouth')></td>");
+      } else {
+        echo("<td id = 'sublansing' class = 'temp' onclick = loadCard('sublansing')></td>
+        <td id = 'subnorth' class = 'tmp' onclick = loadCard('subnorth')></td>
+        <td id = 'subsouth' class = 'selected' onclick = loadCard('subsouth')></td>");
+      }
+
+      ?>
+		</tr>
+	</table>
+      <!--put the rest before div for vertical spacer-->
+	  <script type = 'text/javascript'>
+      <?php
+
+    echo("
+		var selected = '$user_region';
+		$.ajax({
+        type: 'GET',
+        url: '$user_region.php',
+        success: function (data) { 
+			$('#sublansing').html(tabString('lansing'));
+			$('#subnorth').html(tabString('north'));
+			$('#subsouth').html(tabString('south'));
+			$('#$user_region').html(data);
+			$('.card').css('opacity', '1');
+        }
+		});
+		")
+	?>
+	
+		function tabString(region){
+			return "<img class = 'tab' src = 'images/tabs" + region + ".png' alt = '" + region + "'>";
+		}
+		
+		function loadCard(region){
+			if (region == selected)
+				return;
+			$('.card').css('opacity', '0');
+			//sleep(1000);
+			
+			$('#' + selected).html('');
+			$.ajax({
+			type: 'GET',
+			url: region + '.php',
+			success: function (data) { 
+			$('#sublansing').html('').removeClass();
+			$('#subnorth').html('').removeClass();
+			$('#subsouth').html('').removeClass();
+			
+			$('#sublansing').html(tabString("lansing")).addClass('tmp');
+			$('#subnorth').html(tabString("north")).addClass('tmp');
+			$('#subsouth').html(tabString("south")).addClass('tmp');
+			
+			$('#'+region).removeClass();
+			$('#'+region).addClass('selected');
+			$('#'+region).html(data);
+			selected = region;
+			//sleep(2000);
+			
+			$('.card').css('opacity', '1');
+			}
+			
+			});
 		}
 	</script>
     <div class="verticalspacer" data-offset-top="656" data-content-above-spacer="656" data-content-below-spacer="62"></div>

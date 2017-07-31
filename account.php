@@ -182,12 +182,12 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
           echo 'User Information:<br><br><br>';
           echo '<div id="message">'.$message.'</div>';
           echo 'Name: <input id="edit-firstname" class="account" type="text" name="firstname" value='.$firstname.">";
-          echo ' <input id="edit-lastname" class="account" type="text" name="lastname" value='.$lastname."><br><br>";
-          echo 'Username/email: <input id="edit-email" class="account" type="text" name="email" value='.$user."><br><br>";
-          echo 'NYSEG Account Number: <input id="edit-nyseg" class="account" type="text" name="nyseg" value='.$nyseg."><br><br>";
-          echo 'Home Address: <input id="edit-address" class="account" type="text" name="address" value='.'"'.$address.'"'."><br><br>";
-          echo 'Phone number: <input id="edit-phone" class="account" type="text" name="phone" value='.$phone."><br><br><br>";
-          echo 'New Password: <input id="edit-password" class="account" type="text" name="password" value="       "><br><br>';
+          echo ' <input id="edit-lastname" class="account" type="text" name="lastname" value='.$lastname."><br>";
+          echo 'Username/email: <input id="edit-email" class="account" type="text" name="email" value='.$user."><br>";
+          echo 'NYSEG Account Number: <input id="edit-nyseg" class="account" type="text" name="nyseg" value='.$nyseg."><br>";
+          echo 'Home Address: <input id="edit-address" class="account" type="text" name="address" value='.'"'.$address.'"'."><br>";
+          echo 'Phone number: <input id="edit-phone" class="account" type="text" name="phone" value='.$phone."><br><br>";
+          echo 'New Password: <input id="edit-password" class="account" type="text" name="password" value="       "><br>';
           echo 'Confirm New Password: <input id="edit-password-confirm" class="account" type="text" name="passwordconfirm" value="      "><br><br>';
           echo '<div id="submit-button-div"><input id="edit-submit" type="submit" name="submit" value="Update Information"></div></div></form>';
         } 

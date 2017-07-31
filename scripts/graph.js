@@ -5,7 +5,8 @@ var prev = 0;
 
 function calculateDimensions(){
 	height = $(".card").height()/1.7; 
-	width = $(".card").width()*.9;
+	//width = $(".card").width()*.9;
+	width = 450*.9;
 	paddingH = Math.abs(Math.min(height, width)/10 - 10);
 	paddingW = Math.abs(Math.min(height, width)/10 + 5);
 	console.log($(".card").width());

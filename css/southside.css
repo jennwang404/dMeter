@@ -6,7 +6,7 @@
     background-color: transparent;
     color: #FFFFFF;
 }
-
+/*
 .dataviz {
 	margin-top: 55px;
 	margin-right: 55px;
@@ -59,9 +59,9 @@ svg {
     cursor: pointer;
 }
 
-
+*/
 /* Styling for the d3 graphs */
-
+/*
 .energyline {
   fill: none;
   stroke: #E64C66;
@@ -71,4 +71,4 @@ svg {
 .area {
     fill: #E64C66;
     opacity: .5;
-}
+}*/
